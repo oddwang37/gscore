@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'THICCBOI';
+  src: url(/fonts/THICCCBOI-Regular.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'THICCCBOI';
+  src: url(/fonts/THICCCBOI-Medium.woff2) format('woff2');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'THICCCBOI';
+  src: url(/fonts/THICCCBOI-SemiBold.woff2) format('woff2');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'THICCCBOI';
+  src: url(/fonts/THICCCBOI-Bold.woff2) format('woff2');
+  font-weight: 700;
+}
