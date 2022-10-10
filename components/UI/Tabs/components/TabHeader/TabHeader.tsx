@@ -28,7 +28,7 @@ const Title = styled.div`
 
 const Root = styled.div<RootProps>`
   padding: 0 24px 15px 24px;
-  border-bottom-width: 1px;
+  border-bottom-width: 2px;
   border-bottom-style: solid;
   border-bottom-color: ${p => p.isActive ? '#FC5842' : '#393939'};
   cursor: pointer;

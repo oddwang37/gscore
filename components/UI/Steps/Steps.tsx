@@ -3,21 +3,7 @@ import styled from 'styled-components';
 
 import { StepHeader } from './components';
 
-const Steps = () => {
-  const [activeStepIndex, setActiveStepIndex] = useState(1);
-
-  const stepHeaders = ['Profile', 'Subscriptions', 'Change password'];
-
-  const steps = [
-    <div key="0">one div</div>,
-    <div key="1">other div</div>,
-    <div key="2">another one div</div>,
-  ];
-
-  const onChangeCategory = (index: number) => {
-    setActiveStepIndex(index);
-  };
-
+const Steps: FC<StepsProps> = ({ stepHeaders, contentArray, activeStepIndex }) => {
   return (
     <Root>
       <StepHeaders>
@@ -25,12 +11,18 @@ const Steps = () => {
           <StepHeader title={header} isActive={index <= activeStepIndex} key={index} />
         ))}
       </StepHeaders>
-      <StepContent>{steps[activeStepIndex]}</StepContent>
+      <StepContent>{contentArray[activeStepIndex]}</StepContent>
     </Root>
   );
 };
 
 export default Steps;
+
+type StepsProps = {
+  activeStepIndex: number;
+  stepHeaders: Array<string>;
+  contentArray: Array<JSX.Element>;
+};
 
 const Root = styled.div``;
 

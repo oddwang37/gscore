@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { SecondaryButton } from 'components';
 
-const Card: FC<CardProps> = ({ disabled, status }) => {
+const LicenseCard: FC<CardProps> = ({ disabled, status }) => {
   return (
     <Root disabled={disabled}>
       <Header>
@@ -26,7 +26,7 @@ const Card: FC<CardProps> = ({ disabled, status }) => {
   );
 };
 
-export default Card;
+export default LicenseCard;
 
 type CardProps = {
   disabled?: boolean;
@@ -45,7 +45,7 @@ const Root = styled.div<RootProps>`
   background-color: #393939;
   box-shadow: 0px 24px 65px rgba(0, 0, 0, 0.12);
   border-radius: 12px;
-  width: 100%;
+  width: 620px;
   opacity: ${(p) => (p.disabled ? 0.6 : 1)};
 `;
 const Header = styled.div`

@@ -27,7 +27,8 @@ export default Header;
 const Root = styled.div`
   width: 100%;
   height: 105px;
-  padding: 32px 86px;
+  padding: 32px 0;
+  margin-bottom: 32px;
 `;
 const Container = styled.div`
   display: flex;

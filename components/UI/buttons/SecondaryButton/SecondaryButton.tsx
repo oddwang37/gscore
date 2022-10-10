@@ -17,7 +17,7 @@ type RootProps = {
 	disabled?: boolean;
 }
 
-const Root = styled.button<RootProps>`
+export const Root = styled.button<RootProps>`
   width: 100%;
   height: 40px;
   display: flex;

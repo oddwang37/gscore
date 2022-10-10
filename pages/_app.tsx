@@ -14,7 +14,6 @@ body {
   font-family: 'THICCCBOI';
 }
 a {
-  color: inherit;
   text-decoration: none;
 }
 * {

@@ -47,4 +47,5 @@ const Field = styled(Input)<FieldProps>`
   border: none;
   color: #969696;
   padding-right: ${(p) => (p.copyable ? '30%' : '0')};
+  margin-bottom: 0;
 `;

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import { Card, Header, Checkbox, Tabs, Steps, CodeAccordion, Accordion } from 'components';
+import { Card, Header, Checkbox, Tabs, Steps, CodeAccordion, Accordion, PricingCard, Footer } from 'components';
 import { RootState, useAppDispatch } from 'state/store';
 import { addNumber } from 'state/ducks/some';
 
@@ -30,6 +30,13 @@ const Home: NextPage = () => {
       <Divider />
       <Accordion />
       <Divider />
+      <PricingCardsWrapper>
+        <PricingCard price={77} sitesQuantity={1} />
+        <PricingCard price={117} sitesQuantity={3} isMainColor />
+        <PricingCard price={167} sitesQuantity={10}  />
+      </PricingCardsWrapper>
+      <Divider />
+      <Footer />
     </Container>
   );
 };
@@ -37,7 +44,7 @@ const Home: NextPage = () => {
 export default Home;
 
 const Container = styled.div`
-  margin: 0 20px;
+  margin: 0 6%;
 `
 const Title = styled.div`
   color: black;
@@ -50,4 +57,8 @@ const FlexWrapper = styled.div`
 `
 const Divider = styled.div`
   margin: 20px 0;
+`
+const PricingCardsWrapper = styled.div`
+  display: flex;
+  gap: 28px;
 `

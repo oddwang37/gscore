@@ -1,4 +1,4 @@
-export { Card } from './Card';
+export { LicenseCard } from './LicenseCard';
 export {
   PrimaryButton,
   SecondaryButton,
@@ -12,3 +12,6 @@ export {
 } from './UI';
 export { Header } from './Header';
 export { CodeAccordion } from './CodeAccordion';
+export { PricingCard} from './PricingCard';
+export { Footer } from './Footer';
+export { CreateAccountForm, LogInForm, CheckoutForm, SettingsForm, ChangePasswordForm } from './forms';

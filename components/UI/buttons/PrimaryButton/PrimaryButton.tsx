@@ -18,8 +18,7 @@ type RootProps = {
 }
 
 const Root = styled.button<RootProps>`
-  width: 100%;
-  height: 40px;
+  height: 54px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,7 +32,7 @@ const Root = styled.button<RootProps>`
   cursor: pointer;
   box-shadow: 0px 10px 28px rgba(252, 88, 66, 0.2);
   border-radius: 4px;
-  padding: 20px 24px;
+  padding: 20px 60px;
   &:hover {
     background-color: #DC2B2B;
   }

@@ -17,4 +17,8 @@ export { default as Password } from "./Password";
 export { default as Phone } from "./Phone";
 export { default as Search } from "./Search";
 export { default as Web } from "./Web";
-export { default as Copy } from './Copy'
+export { default as Copy } from './Copy';
+export { default as Facebook } from './Facebook';
+export { default as Twitter } from './Twitter';
+export { default as LinkedIn } from './LinkedIn';
+export { default as Delete } from './Delete';

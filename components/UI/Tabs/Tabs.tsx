@@ -3,32 +3,20 @@ import styled from 'styled-components';
 
 import { TabHeader } from './components';
 
-const Tabs = () => {
-
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
-
-  const tabHeaders = [
-    'Profile', 'Subscriptions', 'Change password'
-  ]
-
-  const tabs = [
-    <div>one div</div>, <div>other div</div>, <div>another one div</div>
-  ]
-
-  const onChangeCategory = (index: number) => {
-    setActiveTabIndex(index);
-  }
+const Tabs:FC<TabsProps> = ({activeTabIndex, changeActiveTabIndex, tabHeaders, contentArray}) => {
 
   return (
     <Root>
       <TabHeaders>
         {tabHeaders.map((header, index) => (
-          <TabHeader title={header} isActive={index === activeTabIndex} onClick={() => onChangeCategory(index)} key={index}/>
+            <TabHeader title={header} isActive={index === activeTabIndex} onClick={() => changeActiveTabIndex(index)} key={index}/>
         )
         )}
+        <Line />
       </TabHeaders>
+
       <TabContent>
-        {tabs[activeTabIndex]}
+        {contentArray[activeTabIndex]}
       </TabContent>
     </Root>
   );
@@ -36,6 +24,12 @@ const Tabs = () => {
 
 export default Tabs;
 
+type TabsProps = {
+  activeStepIndex: number;
+  changeActiveTabIndex: (index: number) => void;
+  tabHeaders: Array<string>;
+  contentArray: Array<JSX.Element>;
+};
 
 const Root = styled.div`
 
@@ -43,6 +37,12 @@ const Root = styled.div`
 
 const TabHeaders = styled.div`
   display: flex;
+  align-items: end;
+`
+const Line = styled.div`
+  flex: 1;
+  background-color: #393939;
+  height: 2px;
 `
 const TabContent = styled.div`
 

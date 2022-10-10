@@ -24,6 +24,7 @@ const Root = styled.input`
   color: #393939;
   caret-color: #FC5842;
   opacity: ${p => p.disabled ? 0.6 : 1};
+  margin-bottom: 24px;
   &:placeholder {
     color: #969696;
   }
