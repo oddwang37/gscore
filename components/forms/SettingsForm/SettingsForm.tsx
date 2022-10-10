@@ -7,8 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { Input, PrimaryButton } from 'components';
 
-const SettingsForm: FC<SettingsFormProps> = ({ nextStep }) => {
-
+const SettingsForm: FC<SettingsFormProps> = () => {
   return (
     <Root>
       <Title>Personal Info</Title>
@@ -16,16 +15,14 @@ const SettingsForm: FC<SettingsFormProps> = ({ nextStep }) => {
         <Input placeholder="Username" />
         <Input placeholder="Email" />
       </Form>
-      <PrimaryButton onClick={nextStep}>Save</PrimaryButton>
+      <PrimaryButton>Save</PrimaryButton>
     </Root>
   );
 };
 
 export default SettingsForm;
 
-type SettingsFormProps = {
-  nextStep: () => void;
-};
+type SettingsFormProps = {};
 const Root = styled.div`
   padding-top: 64px;
   padding-bottom: 378px;

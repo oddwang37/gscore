@@ -33,7 +33,7 @@ type CardProps = {
   status: Status;
 };
 
-type Status = 'active' | 'hold' | 'unactive';
+type Status = 'active' | 'hold' | 'inactive';
 
 type RootProps = {
   disabled?: boolean;
@@ -70,7 +70,7 @@ const Status = styled.div<StatusProps>`
         return '#05C168';
       case 'hold':
         return '#ff9e2c';
-      case 'unactive':
+      case 'inactive':
         return '#dc2b2b';
     }
   }};

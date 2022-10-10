@@ -7,8 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { Input, PrimaryButton } from 'components';
 
-const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ nextStep }) => {
-
+const ChangePasswordForm: FC<ChangePasswordFormProps> = () => {
   return (
     <Root>
       <Title>Change password</Title>
@@ -16,16 +15,14 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ nextStep }) => {
         <Input placeholder="Change Password" />
         <Input placeholder="New Password" />
       </Form>
-      <PrimaryButton onClick={nextStep}>Save</PrimaryButton>
+      <PrimaryButton>Save</PrimaryButton>
     </Root>
   );
 };
 
 export default ChangePasswordForm;
 
-type ChangePasswordFormProps = {
-  nextStep: () => void;
-};
+type ChangePasswordFormProps = {};
 const Root = styled.div`
   padding-top: 64px;
   padding-bottom: 378px;
