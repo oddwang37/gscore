@@ -1,3 +1,4 @@
 import { RootState } from 'state/store';
 
-export const selectUsername = (state: RootState) => state.auth.username;
+export const username = (state: RootState) => state.auth.username;
+export const isLoading = (state: RootState) => state.auth.isLoading;

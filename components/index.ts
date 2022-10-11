@@ -9,9 +9,16 @@ export {
   Steps,
   StepHeader,
   Accordion,
+  Loader,
 } from './UI';
 export { Header } from './Header';
 export { CodeAccordion } from './CodeAccordion';
-export { PricingCard} from './PricingCard';
+export { PricingCard } from './PricingCard';
 export { Footer } from './Footer';
-export { CreateAccountForm, LogInForm, CheckoutForm, SettingsForm, ChangePasswordForm } from './forms';
+export {
+  CreateAccountForm,
+  LogInForm,
+  CheckoutForm,
+  SettingsForm,
+  ChangePasswordForm,
+} from './forms';

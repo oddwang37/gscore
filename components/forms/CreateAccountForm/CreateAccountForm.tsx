@@ -1,9 +1,11 @@
 import { FC } from 'react';
 import styled from 'styled-components';
 import { useForm, FieldValues } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 import { useAppDispatch } from 'state/store';
 import { registerUser } from 'state/ducks/auth/slices';
+import { authSelectors } from 'state/ducks/auth';
 import { PrimaryButton } from 'components';
 import { InputField } from '../components';
 
@@ -14,6 +16,7 @@ interface FormValues extends FieldValues {
 }
 
 const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
+  const isLoading = useSelector(authSelectors.isLoading);
   const {
     control,
     handleSubmit,
@@ -77,7 +80,7 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
             }}
           />
         </InputsWrapper>
-        <PrimaryButton>Send password</PrimaryButton>
+        <PrimaryButton isLoading={isLoading}>Send password</PrimaryButton>
       </Form>
       <LogIn>
         Have an account? <LogInLink onClick={nextStep}>Go to the next step</LogInLink>

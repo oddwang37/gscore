@@ -40,7 +40,10 @@ const IconWrapper = styled.div`
     stroke: #c7c7c7;
   }
 `;
-const Field = styled(Input)<FieldProps>`
+const Field = styled.input<FieldProps>`
+  height: 66px;
+  width: 100%;
+  display: block;
   background: #393939;
   box-shadow: 0px 2px 12px rgba(20, 20, 43, 0.06);
   border-radius: 6px;
@@ -48,4 +51,9 @@ const Field = styled(Input)<FieldProps>`
   color: #969696;
   padding-right: ${(p) => (p.copyable ? '30%' : '0')};
   margin-bottom: 0;
+  padding: 25px 23px;
+  color: #393939;
+  &:focus {
+    outline: 1px solid #000;
+  }
 `;

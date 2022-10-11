@@ -21,13 +21,13 @@ export default Input;
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
-  isDirty: boolean;
+  isDirty?: boolean;
 }
 
 type FieldProps = {
   disabled?: boolean;
   error?: string;
-  isDirty: boolean;
+  isDirty?: boolean;
 };
 const Root = styled.div`
   position: relative;
