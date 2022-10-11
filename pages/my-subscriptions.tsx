@@ -11,10 +11,10 @@ const MySubscriptions: NextPage = () => {
   const nextSlide = () => setCurrentSlide(prev => ++prev);
   const prevSlide = () => setCurrentSlide(prev => --prev);
 
-  const [currentTransform, setCurrentTransform] = useState<number>(0);
+  const [currentTranslate, setCurrentTranslate] = useState<number>(0);
 
   useEffect(() => {
-    setCurrentTransform(prev => prev + 620);
+    setCurrentTranslate(prev => prev + 620);
   }, [currentSlide])
 
   return (
@@ -76,12 +76,15 @@ const LicenseSlider = styled.div`
   width: 100%;
   overflow: hidden;
 `
-const SliderWrapper = styled.div`
+type SliderWrapperProps = {
+  translate: number;
+}
+const SliderWrapper = styled.div<SliderWrapperProps>`
   overflow: hidden;
   width: 10000%;
   display: flex;
   gap: 28px;
-  transform: translateX(-620px);
+  transform: translateX(-${p => p.translate}px);
 `
 const SliderNavigation = styled.div`
   display: flex;
