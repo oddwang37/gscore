@@ -13,10 +13,10 @@ const InputField = <TFieldValues extends FieldValues, TName extends FieldPath<TF
 }: InputProps<TFieldValues, TName>) => {
   const {
     field,
-    fieldState: { error },
+    fieldState: { error, isDirty },
   } = useController({ control, name, rules });
 
-  return <Input {...field} {...props} error={error?.message} />;
+  return <Input {...field} {...props} error={error?.message} isDirty={isDirty} />;
 };
 
 export default InputField;
