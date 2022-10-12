@@ -5,15 +5,15 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import { Input, PrimaryButton } from 'components';
+import { InputBase, PrimaryButton } from 'components';
 
 const SettingsForm: FC<SettingsFormProps> = () => {
   return (
     <Root>
       <Title>Personal Info</Title>
       <Form>
-        <Input placeholder="Username" />
-        <Input placeholder="Email" />
+        <InputBase placeholder="Username" />
+        <InputBase placeholder="Email" />
       </Form>
       <PrimaryButton>Save</PrimaryButton>
     </Root>

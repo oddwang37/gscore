@@ -6,7 +6,7 @@ import { Copy } from 'components/svg';
 const CodeInput: FC<CodeInputProps> = ({ copyable }) => {
   return (
     <Root>
-      <Field readOnly />
+      <Field $copyable={copyable} readOnly />
       {copyable && (
         <IconWrapper>
           <Copy />
@@ -23,7 +23,7 @@ type CodeInputProps = {
 };
 
 type FieldProps = {
-  copyable?: boolean;
+  $copyable?: boolean;
 };
 
 const Root = styled.div`
@@ -48,7 +48,7 @@ const Field = styled.input<FieldProps>`
   border-radius: 6px;
   border: none;
   color: #969696;
-  padding-right: ${(p) => (p.copyable ? '30%' : '0')};
+  padding-right: ${({ $copyable }) => ($copyable ? '30%' : '0')};
   margin-bottom: 0;
   padding: 25px 23px;
   color: #393939;

@@ -8,7 +8,7 @@ const LicenseCard: FC<CardProps> = ({ disabled, status }) => {
       <Header>
         <FlexWrapper>
           <Logo>Gscore</Logo>
-          <Status status={status}>{status}</Status>
+          <Status $status={status}>{status}</Status>
         </FlexWrapper>
       </Header>
       <Divider />
@@ -39,7 +39,7 @@ type RootProps = {
   disabled?: boolean;
 };
 type StatusProps = {
-  status: Status;
+  $status: Status;
 };
 const Root = styled.div<RootProps>`
   background-color: #393939;
@@ -56,22 +56,21 @@ const Info = styled.div`
 `;
 const Logo = styled.div`
   color: #fff;
-  font-weight: 700;
-  font-size: 22px;
+  ${({ theme: { typography } }) => typography.title22};
 `;
 
 const Status = styled.div<StatusProps>`
   text-transform: capitalize;
-  font-weight: 700;
-  font-size: 22px;
-  color: ${(p) => {
-    switch (p.status) {
+  ${({ theme: { typography } }) => typography.title22};
+
+  color: ${({ $status, theme: { colors } }) => {
+    switch ($status) {
       case 'active':
-        return '#05C168';
+        return colors.green;
       case 'hold':
-        return '#ff9e2c';
+        return colors.orange;
       case 'inactive':
-        return '#dc2b2b';
+        return colors.red400;
     }
   }};
 `;

@@ -24,7 +24,7 @@ const Field = styled.input<FieldProps>`
   border-radius: 6px;
   padding: 25px 23px;
   color: #393939;
-  caret-color: #fc5842;
+  caret-color: ${({ theme: { colors } }) => colors.primaryColor};
   opacity: ${(p) => (p.disabled ? 0.6 : 1)};
   margin-bottom: 24px;
   &:placeholder {

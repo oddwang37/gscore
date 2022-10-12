@@ -62,7 +62,7 @@ const Container = styled.div`
   margin: 0 6%;
 `;
 const Heading = styled.h1`
-  font-size: 54px;
+  ${({ theme: { typography } }) => typography.title54};
 `;
 const HeadingWrapper = styled.div`
   display: flex;
@@ -99,8 +99,7 @@ const NavButton = styled.div`
 `;
 const SlidesQuantity = styled.div`
   color: #393939;
-  font-size: 22px;
-  font-weight: 700;
+  ${({ theme: { typography } }) => typography.title22};
 `;
 const CurrentSlide = styled.span`
   color: #fff;

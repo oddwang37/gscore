@@ -8,17 +8,17 @@ import { Check } from 'components/svg';
 
 const PricingCard: FC<PricingCardProps> = ({ price, sitesQuantity, isMainColor }) => {
   return (
-    <Root isMainColor={isMainColor}>
+    <Root $isMainColor={isMainColor}>
       <Price>${price}</Price>
       <SitesQuantity>{sitesQuantity === 1 ? 'Single' : sitesQuantity} Site license</SitesQuantity>
-      <Description isMainColor={isMainColor}>
+      <Description $isMainColor={isMainColor}>
         Get the advanced WordPress plugin that optimizes content with GSC keywords at one low annual
         price
       </Description>
       <Divider />
       <List>
         <ListItem>
-          <ListItemCheck isMainColor={isMainColor}>
+          <ListItemCheck $isMainColor={isMainColor}>
             <Check />
           </ListItemCheck>
           <ListItemText>All features for 3 sites</ListItemText>
@@ -26,7 +26,7 @@ const PricingCard: FC<PricingCardProps> = ({ price, sitesQuantity, isMainColor }
       </List>
       <List>
         <ListItem>
-          <ListItemCheck isMainColor={isMainColor}>
+          <ListItemCheck $isMainColor={isMainColor}>
             <Check />
           </ListItemCheck>
           <ListItemText>Special introductory pricing</ListItemText>
@@ -34,7 +34,7 @@ const PricingCard: FC<PricingCardProps> = ({ price, sitesQuantity, isMainColor }
       </List>
       <List>
         <ListItem>
-          <ListItemCheck isMainColor={isMainColor}>
+          <ListItemCheck $isMainColor={isMainColor}>
             <Check />
           </ListItemCheck>
           <ListItemText>Unlimited Pages and Keywords</ListItemText>
@@ -42,14 +42,14 @@ const PricingCard: FC<PricingCardProps> = ({ price, sitesQuantity, isMainColor }
       </List>
       <List>
         <ListItem>
-          <ListItemCheck isMainColor={isMainColor}>
+          <ListItemCheck $isMainColor={isMainColor}>
             <Check />
           </ListItemCheck>
           <ListItemText>Billed annually</ListItemText>
         </ListItem>
       </List>
       <Link href="/create-account">
-        <Button isMainColor={isMainColor}>Get Gscore</Button>
+        <Button $isMainColor={isMainColor}>Get Gscore</Button>
       </Link>
     </Root>
   );
@@ -64,23 +64,22 @@ type PricingCardProps = {
 };
 
 type IsMainColorProp = {
-  isMainColor?: boolean;
+  $isMainColor?: boolean;
 };
 
 const Root = styled.div<IsMainColorProp>`
   padding: 42px 48px;
   text-align: center;
-  background-color: ${(p) => (p.isMainColor ? '#FC5842' : '#272727')};
+  background-color: ${({ $isMainColor }) => ($isMainColor ? '#FC5842' : '#272727')};
   box-shadow: 0px 8px 28px rgba(0, 0, 0, 0.06);
   border-radius: 12px;
   @media (min-width: 768px) {
-    margin-bottom: ${(p) => (p.isMainColor ? '5%' : '0')};
+    margin-bottom: ${($isMainColor) => ($isMainColor ? '5%' : '0')};
   }
 `;
 
 const Price = styled.div`
-  font-size: 54px;
-  font-weight: 700;
+  ${({ theme: { typography } }) => typography.title54};
 `;
 
 const SitesQuantity = styled.div`
@@ -89,11 +88,9 @@ const SitesQuantity = styled.div`
   font-weight: 700;
 `;
 const Description = styled.div<IsMainColorProp>`
-  line-height: 30px;
-  font-size: 18px;
-  font-weight: 500;
+  ${({ theme: { typography } }) => typography.textMedium18Center}
   margin-top: 8px;
-  color: ${(p) => (p.isMainColor ? '#fff' : '#c7c7c7')};
+  color: ${({ $isMainColor }) => ($isMainColor ? '#fff' : '#c7c7c7')};
 `;
 
 const Divider = styled.div`
@@ -118,8 +115,7 @@ const ListItem = styled.li`
   margin-bottom: 20px;
 `;
 const ListItemText = styled.div`
-  font-size: 18px;
-  font-weight: 500;
+  ${({ theme: { typography } }) => typography.textMedium18}
 `;
 const ListItemCheck = styled.div<IsMainColorProp>`
   width: 26px;
@@ -132,7 +128,7 @@ const ListItemCheck = styled.div<IsMainColorProp>`
     height: 26px;
   }
   & path {
-    stroke: ${(p) => (p.isMainColor ? '#FC5842' : '#272727')};
+    stroke: ${({ $isMainColor }) => ($isMainColor ? '#FC5842' : '#272727')};
   }
 `;
 const Button = styled.button<IsMainColorProp>`
@@ -157,6 +153,6 @@ const Button = styled.button<IsMainColorProp>`
   &:focus {
     outline: 4px solid rgba(252, 88, 66, 0.3);
   }
-  color: ${(p) => (p.isMainColor ? '#FC5842' : '#181818')};
+  color: ${({ $isMainColor }) => ($isMainColor ? '#FC5842' : '#181818')};
   box-shadow: none;
 `;

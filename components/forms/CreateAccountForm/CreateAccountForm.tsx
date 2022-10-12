@@ -100,7 +100,7 @@ const Root = styled.div`
   padding-bottom: 228px;
 `;
 const Title = styled.h1`
-  font-size: 44px;
+  ${({ theme: { typography } }) => typography.title44}
 `;
 const Description = styled.div`
   margin-top: 16px;
@@ -117,9 +117,9 @@ const LogIn = styled.div`
   margin-top: 48px;
 `;
 const LogInLink = styled.a`
-  color: #fc5842;
+  color: ${({ theme: { colors } }) => colors.primaryColor};
   cursor: pointer;
   &:visited {
-    color: #fc5842;
+    color: ${({ theme: { colors } }) => colors.primaryColor};
   }
 `;

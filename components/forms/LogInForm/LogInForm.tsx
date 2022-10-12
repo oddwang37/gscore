@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
 import { PrimaryButton } from 'components';
-import { Input } from 'components';
+import { InputBase } from 'components';
 
 const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
   return (
     <Root>
       <Title>Log In</Title>
       <Form>
-        <Input placeholder="Email" />
-        <Input placeholder="Password" />
+        <InputBase placeholder="Email" />
+        <InputBase placeholder="Password" />
       </Form>
       <PrimaryButton onClick={nextStep}>Log In</PrimaryButton>
     </Root>
@@ -28,7 +28,7 @@ const Root = styled.div`
   padding-bottom: 228px;
 `;
 const Title = styled.h1`
-  font-size: 44px;
+  ${({ theme: { typography } }) => typography.title44}
 `;
 const Description = styled.div`
   margin-top: 16px;

@@ -68,18 +68,17 @@ const InvisibleText = styled.div`
   opacity: 0;
 `;
 const Status = styled.div<StatusProps>`
-  font-size: 22px;
-  font-weight: 700;
+  ${({ theme: { typography } }) => typography.title22};
   text-transform: capitalize;
   justify-self: end;
-  color: ${({ $status }) => {
+  color: ${({ $status, theme: { colors } }) => {
     switch ($status) {
       case 'active':
-        return '#05C168';
+        return colors.green;
       case 'hold':
-        return '#FF9E2C';
+        return colors.orange;
       case 'inactive':
-        return '#FF5A65';
+        return colors.red400;
     }
   }};
 `;
