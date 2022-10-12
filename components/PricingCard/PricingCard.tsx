@@ -147,6 +147,7 @@ const Button = styled.button<IsMainColorProp>`
   border-radius: 4px;
   padding: 20px 60px;
   background-color: #fff;
+  width: 100%;
   &:hover {
     background-color: #fbfbfb;
   }
