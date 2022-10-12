@@ -4,7 +4,7 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { useAppDispatch } from 'state/store';
-import { registerUser } from 'state/ducks/auth/slices';
+import { authThunks } from 'state/ducks/auth';
 import { authSelectors } from 'state/ducks/auth';
 import { PrimaryButton } from 'components';
 import { InputField } from '../components';
@@ -17,12 +17,7 @@ interface FormValues extends FieldValues {
 
 const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
   const isLoading = useSelector(authSelectors.isLoading);
-  const {
-    control,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<FormValues>({
+  const { control, handleSubmit, setError } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
       username: '',
@@ -34,11 +29,11 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
 
   const onSubmit = (data: FormValues) => {
     const { username, email, password } = data;
-    dispatch(registerUser({ username, email, password }))
+    dispatch(authThunks.registerUser({ username, email, password }))
       .unwrap()
       .then(() => nextStep())
       .catch((e) => {
-        if (e.message.includes('409')) {
+        if (e.statusCode === 409) {
           setError('email', { type: 'server', message: 'User with this email already exists' });
         }
       });
