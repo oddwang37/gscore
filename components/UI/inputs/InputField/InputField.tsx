@@ -1,10 +1,11 @@
 import React, { FC, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
-import { ErrorMessage } from './components';
+import { ErrorMessage } from 'components/UI/inputs/InputField/components';
 import { Check, Close } from 'components/svg';
+import { InputBase } from '../InputBase';
 
-const Input: FC<InputProps> = ({ error, isDirty, ...props }) => {
+const InputField: FC<InputProps> = ({ error, isDirty, ...props }) => {
   return (
     <Root>
       <Field {...props} error={error} isDirty={isDirty} />
@@ -17,7 +18,7 @@ const Input: FC<InputProps> = ({ error, isDirty, ...props }) => {
   );
 };
 
-export default Input;
+export default InputField;
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
@@ -38,11 +39,7 @@ const IconWrapper = styled.div`
   top: 20px;
 `;
 
-const Field = styled.input<FieldProps>`
-  height: 66px;
-  width: 100%;
-  display: block;
-  background: #ffffff;
+const Field = styled(InputBase)<FieldProps>`
   border-width: 1px;
   border-style: solid;
   border-color: ${(p) => {
@@ -50,19 +47,24 @@ const Field = styled.input<FieldProps>`
       return '#ff5a65';
     } else if (p.isDirty) {
       return '#05C168';
+    } else {
+      return 'rgba(0, 0, 0, 0)';
     }
   }};
-  box-shadow: 0px 2px 12px rgba(20, 20, 43, 0.06);
-  border-radius: 6px;
-  padding: 25px 23px;
-  color: #393939;
-  caret-color: #fc5842;
-  opacity: ${(p) => (p.disabled ? 0.6 : 1)};
   margin-bottom: ${(p) => (p.error ? '10px' : '24px')};
   &:placeholder {
     color: #969696;
   }
   &:focus {
-    outline: 1px solid #000;
+    outline: 1px solid
+      ${(p) => {
+        if (p.error) {
+          return '#ff5a65';
+        } else if (p.isDirty) {
+          return '#05C168';
+        } else {
+          return '#000';
+        }
+      }};
   }
 `;

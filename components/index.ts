@@ -1,9 +1,11 @@
 export { LicenseCard } from './LicenseCard';
 export {
+  BaseButton,
   PrimaryButton,
   SecondaryButton,
   Checkbox,
-  Input,
+  InputBase,
+  InputField,
   TabHeader,
   Tabs,
   Steps,

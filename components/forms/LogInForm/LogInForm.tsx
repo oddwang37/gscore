@@ -1,14 +1,11 @@
 import { FC } from 'react';
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import Link from 'next/link';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import { Input, PrimaryButton } from 'components';
+import { PrimaryButton } from 'components';
+import { Input } from 'components';
 
 const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
-
   return (
     <Root>
       <Title>Log In</Title>

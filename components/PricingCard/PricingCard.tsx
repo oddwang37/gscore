@@ -3,7 +3,7 @@ import Link from 'next/Link';
 import styled from 'styled-components';
 
 import { useAppDispatch } from 'state/store';
-import { Root as SecondaryButton } from 'components/UI/buttons/SecondaryButton/SecondaryButton';
+import { SecondaryButton } from 'components';
 import { Check } from 'components/svg';
 
 const PricingCard: FC<PricingCardProps> = ({ price, sitesQuantity, isMainColor }) => {
@@ -135,7 +135,28 @@ const ListItemCheck = styled.div<IsMainColorProp>`
     stroke: ${(p) => (p.isMainColor ? '#FC5842' : '#272727')};
   }
 `;
-const Button = styled(SecondaryButton)<IsMainColorProp>`
+const Button = styled.button<IsMainColorProp>`
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: THICCCBOI;
+  opacity: ${(p) => (p.disabled ? 0.6 : 1)};
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 10px 28px rgba(252, 88, 66, 0.2);
+  border-radius: 4px;
+  padding: 20px 60px;
+  background-color: #fff;
+  &:hover {
+    background-color: #fbfbfb;
+  }
+  &:focus {
+    outline: 4px solid rgba(252, 88, 66, 0.3);
+  }
   color: ${(p) => (p.isMainColor ? '#FC5842' : '#181818')};
   box-shadow: none;
 `;

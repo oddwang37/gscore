@@ -1,5 +1,5 @@
-export { PrimaryButton, SecondaryButton } from './buttons';
-export { Input } from './Input';
+export { BaseButton, PrimaryButton, SecondaryButton } from './buttons';
+export { InputBase, InputField } from './inputs';
 export { Checkbox } from './Checkbox';
 export { Tabs, TabHeader } from './Tabs';
 export { Steps, StepHeader } from './Steps';

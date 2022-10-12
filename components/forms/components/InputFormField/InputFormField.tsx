@@ -2,9 +2,9 @@ import React, { InputHTMLAttributes } from 'react';
 import type { FieldValues, FieldPath, UseControllerProps } from 'react-hook-form';
 import { useController } from 'react-hook-form';
 
-import { Input } from 'components/UI';
+import { InputField } from 'components/UI';
 
-const InputField = <TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({
+const InputFormField = <TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({
   id,
   control,
   name,
@@ -16,10 +16,10 @@ const InputField = <TFieldValues extends FieldValues, TName extends FieldPath<TF
     fieldState: { error, isDirty },
   } = useController({ control, name, rules });
 
-  return <Input {...field} {...props} error={error?.message} isDirty={isDirty} />;
+  return <InputField {...field} {...props} error={error?.message} isDirty={isDirty} />;
 };
 
-export default InputField;
+export default InputFormField;
 
 type InputProps<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
   id?: string;

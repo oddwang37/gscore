@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { Input } from 'components';
 import { Copy } from 'components/svg';
 
 const CodeInput: FC<CodeInputProps> = ({ copyable }) => {
