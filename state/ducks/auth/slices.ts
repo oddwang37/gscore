@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
-import { registerUser, loginUser } from './thunks';
+import cookies, { CookiesKeys } from 'services/cookies';
+
+import { registerUser, loginUser, getMe } from './thunks';
 
 interface AuthState {
-  token: string;
   username: string;
   isLoading: boolean;
 }
 
 const initialState: AuthState = {
-  token: '',
   username: '',
   isLoading: false,
 };
@@ -25,7 +25,7 @@ const authSlice = createSlice({
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.token = action.payload.token;
+      cookies.setItem(CookiesKeys.token, action.payload.token);
       state.username = action.payload.username;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
@@ -36,11 +36,14 @@ const authSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.token = action.payload.token;
+      cookies.setItem(CookiesKeys.token, action.payload.token);
       state.username = action.payload.user.username;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.isLoading = false;
+    });
+    builder.addCase(getMe.fulfilled, (state, action) => {
+      console.log(action.payload);
     });
   },
 });

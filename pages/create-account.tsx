@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import styled from 'styled-components';
+import { useAppDispatch } from 'state/store';
 
+import { getMe } from 'state/ducks/auth/thunks';
 import { Header, Steps, CreateAccountForm, LogInForm, CheckoutForm, Footer } from 'components';
 
 const CreateAccount: NextPage = () => {
@@ -14,6 +16,10 @@ const CreateAccount: NextPage = () => {
     <CheckoutForm key="2" />,
   ];
 
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getMe());
+  }, []);
   return (
     <Container>
       <Header />

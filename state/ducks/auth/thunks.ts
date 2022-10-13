@@ -39,3 +39,14 @@ export const registerUser = createAsyncThunk(
     }
   },
 );
+
+export const getMe = createAsyncThunk('auth/get-me', async (_, { rejectWithValue }) => {
+  try {
+    const result = await http.get('users/me');
+    return result.data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+});

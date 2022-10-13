@@ -1,12 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-
-import { RootState, AppStore } from 'state/store';
-
-let store: AppStore;
-
-export const injectStore = (_store: AppStore) => {
-  store = _store;
-};
+import cookies, { CookiesKeys } from 'services/cookies';
 
 const instance = axios.create({
   baseURL: 'https://gscore-back.herokuapp.com/api/',
@@ -16,7 +9,7 @@ instance.interceptors.request.use((config) => {
   if (!config.headers) {
     config.headers = {};
   }
-  config.headers.Authorization = `Bearer ${store.getState().auth.token}`;
+  config.headers.Authorization = `Bearer ${cookies.getItem(CookiesKeys.token)}`;
   return config;
 });
 

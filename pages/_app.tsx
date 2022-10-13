@@ -5,8 +5,6 @@ import { store } from 'state/store';
 import 'fonts.css';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from 'state/store';
-import { injectStore } from 'services/http';
-injectStore(store);
 
 const GlobalStyles = createGlobalStyle`
 html {
