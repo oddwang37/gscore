@@ -17,7 +17,12 @@ interface FormValues extends FieldValues {
 
 const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
   const isLoading = useSelector(authSelectors.isLoading);
-  const { control, handleSubmit, setError } = useForm<FormValues>({
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { isValid },
+  } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
       username: '',
@@ -75,7 +80,9 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
             }}
           />
         </InputsWrapper>
-        <PrimaryButton isLoading={isLoading}>Send password</PrimaryButton>
+        <PrimaryButton disabled={!isValid} isLoading={isLoading}>
+          Send password
+        </PrimaryButton>
       </Form>
       <LogIn>
         Have an account? <LogInLink onClick={nextStep}>Go to the next step</LogInLink>

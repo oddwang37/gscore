@@ -16,7 +16,12 @@ interface FormValues extends FieldValues {
 
 const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
   const isLoading = useSelector(authSelectors.isLoading);
-  const { control, handleSubmit, setError } = useForm<FormValues>({
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { isValid },
+  } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
       email: '',
@@ -71,7 +76,9 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
             rules={{ required: 'This field is required' }}
           />
         </InputsWrapper>
-        <PrimaryButton isLoading={isLoading}>Log In</PrimaryButton>
+        <PrimaryButton disabled={!isValid} isLoading={isLoading}>
+          Log In
+        </PrimaryButton>
       </Form>
     </Root>
   );
