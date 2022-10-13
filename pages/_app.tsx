@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { store } from 'state/store';
 import 'fonts.css';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from 'state/store';
 
 const GlobalStyles = createGlobalStyle`
 html {
@@ -85,10 +87,12 @@ const theme = {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-        <GlobalStyles />
-      </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+          <GlobalStyles />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 }

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
 import { registerUser, loginUser } from './thunks';
 
 interface AuthState {
@@ -18,6 +19,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(HYDRATE, (state, action) => {});
     builder.addCase(registerUser.pending, (state, action) => {
       state.isLoading = true;
     });
