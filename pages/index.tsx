@@ -1,43 +1,28 @@
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
-import {
-  LicenseCard,
-  Header,
-  Checkbox,
-  CodeAccordion,
-  Accordion,
-  PricingCard,
-  Footer,
-} from 'components';
+import { getMe } from 'state/ducks/auth/thunks';
+import { useAppDispatch } from 'state/store';
+import { Header, Footer } from 'components';
+import withAuth from 'utils/withAuth';
 
 const Home: NextPage = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getMe());
+  }, []);
+
   return (
     <Container>
       <Header />
-      <Divider />
-      <FlexWrapper>
-        <LicenseCard status="active" /> <LicenseCard disabled status="inactive" />
-      </FlexWrapper>
-      <Divider />
-      <Checkbox />
-      <Divider />
-      <CodeAccordion />
-      <Divider />
-      <Accordion />
-      <Divider />
-      <PricingCardsWrapper>
-        <PricingCard price={77} sitesQuantity={1} />
-        <PricingCard price={117} sitesQuantity={3} isMainColor />
-        <PricingCard price={167} sitesQuantity={10} />
-      </PricingCardsWrapper>
-      <Divider />
       <Footer />
     </Container>
   );
 };
 
-export default Home;
+export default withAuth(Home);
 
 const Container = styled.div`
   margin: 0 6%;

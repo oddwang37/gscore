@@ -1,10 +1,10 @@
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
-import { store } from 'state/store';
-import 'fonts.css';
 import { PersistGate } from 'redux-persist/integration/react';
-import { persistor } from 'state/store';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+
+import { persistor, store } from 'state/store';
+import 'fonts.css';
 
 const GlobalStyles = createGlobalStyle`
 html {

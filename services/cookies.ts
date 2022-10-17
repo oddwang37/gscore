@@ -1,15 +1,18 @@
-import { getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 export enum CookiesKeys {
   token = 'token',
 }
 
 class Cookies {
-  setItem<T>(key: CookiesKeys, data: T): void {
-    setCookie(key, data);
+  setItem<T>(key: CookiesKeys, data: T, options: any = {}): void {
+    setCookie(key, data, options);
   }
-  getItem(key: CookiesKeys) {
-    return getCookie(key);
+  getItem(key: CookiesKeys, options: any = {}) {
+    return getCookie(key, options);
+  }
+  deleteItem(key: CookiesKeys, options: any = {}): void {
+    deleteCookie(key, options);
   }
 }
 
