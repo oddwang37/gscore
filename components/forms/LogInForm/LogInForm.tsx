@@ -28,9 +28,10 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
     },
   });
   const dispatch = useAppDispatch();
+  const isLoading = useSelector(authSelectors.isLoading);
 
   const onSubmit = (data: FormValues) => {
-    const { username, email, password } = data;
+    const { email, password } = data;
     dispatch(authThunks.loginUser({ email, password }))
       .unwrap()
       .then(() => {
@@ -75,7 +76,7 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
             rules={{ required: 'This field is required' }}
           />
         </InputsWrapper>
-        <PrimaryButton disabled={!isValid} isLoading={isSubmitting}>
+        <PrimaryButton disabled={!isValid} isLoading={isLoading}>
           Log In
         </PrimaryButton>
       </Form>

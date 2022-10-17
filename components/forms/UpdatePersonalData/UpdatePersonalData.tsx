@@ -22,7 +22,7 @@ const UpdatePersonalData: FC<UpdatePersonalProps> = () => {
     handleSubmit,
     setError,
     reset,
-    formState: { isValid, isSubmitting, isDirty },
+    formState: { isValid, isDirty },
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -32,6 +32,8 @@ const UpdatePersonalData: FC<UpdatePersonalProps> = () => {
   });
   const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const isLoading = useSelector(authSelectors.isLoading);
+
   const onSubmit = (data: FormValues) => {
     const username = data.username || currentUsername;
     const email = data.email || currentEmail;
@@ -81,7 +83,7 @@ const UpdatePersonalData: FC<UpdatePersonalProps> = () => {
           />
           {isSuccessfullySubmitted && <SuccessMessage>Data updated successfully</SuccessMessage>}
         </InputWrapper>
-        <PrimaryButton disabled={!isDirty || !isValid} isLoading={isSubmitting}>
+        <PrimaryButton disabled={!isDirty || !isValid} isLoading={isLoading}>
           Save
         </PrimaryButton>
       </Form>

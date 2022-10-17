@@ -10,10 +10,6 @@ import { withAuth } from 'hocs/withAuth';
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(getMe());
-  }, []);
-
   return (
     <Container>
       <Header />

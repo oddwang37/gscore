@@ -17,9 +17,7 @@ const CreateAccount: NextPage = () => {
   ];
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getMe());
-  }, []);
+
   return (
     <Container>
       <Header />

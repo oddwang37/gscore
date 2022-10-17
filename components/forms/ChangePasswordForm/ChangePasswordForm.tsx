@@ -20,7 +20,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = () => {
     handleSubmit,
     setError,
     reset,
-    formState: { isValid, isDirty, isSubmitting },
+    formState: { isValid, isDirty },
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -30,6 +30,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = () => {
   });
   const dispatch = useAppDispatch();
   const userEmail = useSelector(authSelectors.email);
+  const isLoading = useSelector(authSelectors.isLoading);
 
   const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState<boolean>(false);
 
@@ -81,7 +82,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = () => {
           />
           {isSuccessfullySubmitted && <SuccessMessage>Data updated successfully</SuccessMessage>}
         </InputsWrapper>
-        <PrimaryButton disabled={!isValid} isLoading={isSubmitting}>
+        <PrimaryButton disabled={!isValid} isLoading={isLoading}>
           Save
         </PrimaryButton>
       </Form>

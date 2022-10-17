@@ -20,7 +20,7 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
     control,
     handleSubmit,
     setError,
-    formState: { isValid, isSubmitting },
+    formState: { isValid },
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -30,6 +30,7 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
     },
   });
   const dispatch = useAppDispatch();
+  const isLoading = useSelector(authSelectors.isLoading);
 
   const onSubmit = (data: FormValues) => {
     const { username, email, password } = data;
@@ -79,7 +80,7 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
             }}
           />
         </InputsWrapper>
-        <PrimaryButton disabled={!isValid} isLoading={isSubmitting}>
+        <PrimaryButton disabled={!isValid} isLoading={isLoading}>
           Send password
         </PrimaryButton>
       </Form>
