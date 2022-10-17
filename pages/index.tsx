@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { getMe } from 'state/ducks/auth/thunks';
 import { useAppDispatch } from 'state/store';
 import { Header, Footer } from 'components';
-import withAuth from 'utils/withAuth';
+import { withAuth } from 'hocs/withAuth';
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();

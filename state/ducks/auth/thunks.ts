@@ -12,10 +12,22 @@ interface SignUpInfo extends SignInInfo {
   username: string;
 }
 
+interface UpdatePasswordReq {
+  currentPassword: string;
+  newPassword: string;
+}
+
+interface UpdatePersonalDataReq {
+  username: string;
+  email: string;
+}
+
 const API = {
   loginUser: 'users/sign-in',
   registerUser: 'users/sign-up',
   getMe: 'users/me',
+  updatePassword: 'users/update-password',
+  updatePersonalData: 'users',
 };
 
 export const loginUser = createAsyncThunk(
@@ -56,3 +68,31 @@ export const getMe = createAsyncThunk('auth/get-me', async (_, { rejectWithValue
     }
   }
 });
+
+export const updatePassword = createAsyncThunk(
+  'auth/update-password',
+  async (passwordInfo: UpdatePasswordReq, { rejectWithValue }) => {
+    try {
+      const result = await http.patch(API.updatePassword, passwordInfo);
+      return result.data;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data);
+      }
+    }
+  },
+);
+
+export const updatePersonalData = createAsyncThunk(
+  'auth/update-personal-data',
+  async (personalInfo: UpdatePersonalDataReq, { rejectWithValue }) => {
+    try {
+      const result = await http.patch(API.updatePersonalData, personalInfo);
+      return result.data;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data);
+      }
+    }
+  },
+);

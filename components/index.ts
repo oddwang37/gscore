@@ -21,6 +21,6 @@ export {
   CreateAccountForm,
   LogInForm,
   CheckoutForm,
-  SettingsForm,
+  UpdatePersonalData,
   ChangePasswordForm,
 } from './forms';

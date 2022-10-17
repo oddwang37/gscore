@@ -14,6 +14,8 @@ const Loader = () => {
 export default Loader;
 
 const Root = styled.div`
+  width: 24px;
+  height: 24px;
   @keyframes spin {
     0% {
       transform: rotate(0deg);

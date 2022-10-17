@@ -1,87 +1,87 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useForm, FieldValues } from 'react-hook-form';
-
-import { useAppDispatch } from 'state/store';
-import { authSelectors, authThunks } from 'state/ducks/auth';
-
-import { InputFormField } from '../components/InputFormField';
-import { PrimaryButton } from 'components';
 import { useSelector } from 'react-redux';
 
-interface FormValues extends FieldValues {
-  currentPassword: string;
-  newPassword: string;
-}
+import { useAppDispatch } from 'state/store';
+import { authThunks } from 'state/ducks/auth';
+import { authSelectors } from 'state/ducks/auth';
 
-const ChangePasswordForm: FC<ChangePasswordFormProps> = () => {
+import { PrimaryButton } from 'components';
+import { InputFormField } from '../components/InputFormField';
+
+interface FormValues extends FieldValues {
+  username: string;
+  email: string;
+}
+const UpdatePersonalData: FC<UpdatePersonalProps> = () => {
+  const currentEmail = useSelector(authSelectors.email);
+  const currentUsername = useSelector(authSelectors.username);
   const {
     control,
     handleSubmit,
     setError,
     reset,
-    formState: { isValid, isDirty, isSubmitting },
+    formState: { isValid, isSubmitting, isDirty },
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
-      currentPassword: '',
-      newPassword: '',
+      username: '',
+      email: '',
     },
   });
-  const dispatch = useAppDispatch();
-  const userEmail = useSelector(authSelectors.email);
-
   const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState<boolean>(false);
-
+  const dispatch = useAppDispatch();
   const onSubmit = (data: FormValues) => {
-    const { currentPassword, newPassword } = data;
-    dispatch(authThunks.loginUser({ email: userEmail, password: currentPassword }))
+    const username = data.username || currentUsername;
+    const email = data.email || currentEmail;
+    dispatch(authThunks.updatePersonalData({ username, email }))
       .unwrap()
       .then(() => {
-        dispatch(authThunks.updatePassword({ currentPassword, newPassword }))
-          .unwrap()
-          .then(() => {
-            reset();
-            setIsSuccessfullySubmitted(true);
-          });
+        reset();
+        setIsSuccessfullySubmitted(true);
       })
       .catch(({ statusCode }) => {
         switch (statusCode) {
-          case 400: {
-            setError('currentPassword', { type: 'server', message: 'Incorrect password' });
-            setIsSuccessfullySubmitted(false);
-            break;
-          }
+          case 409:
+            setError('email', { type: 'server', message: 'User with this email already exists' });
         }
+        setIsSuccessfullySubmitted(false);
       });
   };
 
   if (isDirty && isSuccessfullySubmitted) {
     setIsSuccessfullySubmitted(false);
   }
+
   return (
     <Root>
-      <Title>Change password</Title>
+      <Title>Personal Info</Title>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <InputsWrapper>
+        <InputWrapper>
           <InputFormField
             control={control}
-            name="currentPassword"
-            placeholder="Current Password"
-            rules={{ required: 'This field is required' }}
+            name="username"
+            placeholder="Username"
+            rules={{
+              minLength: { value: 2, message: 'Username must contain at least 2 characters' },
+            }}
           />
           <InputFormField
             control={control}
-            name="newPassword"
-            placeholder="New Password"
+            name="email"
+            placeholder="Email"
             rules={{
-              required: 'This field is required',
-              minLength: { value: 6, message: 'Password must contain more than 5 characters' },
+              pattern: {
+                value:
+                  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+                message: 'Email must be valid',
+              },
             }}
           />
           {isSuccessfullySubmitted && <SuccessMessage>Data updated successfully</SuccessMessage>}
-        </InputsWrapper>
-        <PrimaryButton disabled={!isValid} isLoading={isSubmitting}>
+        </InputWrapper>
+        <PrimaryButton disabled={!isDirty || !isValid} isLoading={isSubmitting}>
           Save
         </PrimaryButton>
       </Form>
@@ -89,9 +89,9 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = () => {
   );
 };
 
-export default ChangePasswordForm;
+export default UpdatePersonalData;
 
-type ChangePasswordFormProps = {};
+type UpdatePersonalProps = {};
 const Root = styled.div`
   padding-top: 64px;
   padding-bottom: 378px;
@@ -113,7 +113,7 @@ const Form = styled.form`
   margin-top: 24px;
   margin-bottom: 48px;
 `;
-const InputsWrapper = styled.div`
+const InputWrapper = styled.div`
   margin-bottom: 48px;
 `;
 const SuccessMessage = styled.div`

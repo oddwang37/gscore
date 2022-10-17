@@ -7,7 +7,7 @@ import { useAppDispatch } from 'state/store';
 import { authThunks } from 'state/ducks/auth';
 import { authSelectors } from 'state/ducks/auth';
 import { PrimaryButton } from 'components';
-import { InputField } from '../components';
+import { InputFormField } from '../components';
 
 interface FormValues extends FieldValues {
   username: string;
@@ -16,12 +16,11 @@ interface FormValues extends FieldValues {
 }
 
 const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
-  const isLoading = useSelector(authSelectors.isLoading);
   const {
     control,
     handleSubmit,
     setError,
-    formState: { isValid },
+    formState: { isValid, isSubmitting },
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -51,13 +50,13 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
       </Description>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputsWrapper>
-          <InputField
+          <InputFormField
             control={control}
             name="username"
             placeholder="Username"
             rules={{ required: { value: true, message: 'This field is required' } }}
           />
-          <InputField
+          <InputFormField
             control={control}
             name="email"
             placeholder="Email"
@@ -70,7 +69,7 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
               },
             }}
           />
-          <InputField
+          <InputFormField
             control={control}
             name="password"
             placeholder="Password"
@@ -80,7 +79,7 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
             }}
           />
         </InputsWrapper>
-        <PrimaryButton disabled={!isValid} isLoading={isLoading}>
+        <PrimaryButton disabled={!isValid} isLoading={isSubmitting}>
           Send password
         </PrimaryButton>
       </Form>

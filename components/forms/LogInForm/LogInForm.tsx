@@ -7,7 +7,7 @@ import { useAppDispatch } from 'state/store';
 import { authThunks } from 'state/ducks/auth';
 import { authSelectors } from 'state/ducks/auth';
 import { PrimaryButton } from 'components';
-import { InputField } from '../components';
+import { InputFormField } from '../components';
 
 interface FormValues extends FieldValues {
   email: string;
@@ -15,12 +15,11 @@ interface FormValues extends FieldValues {
 }
 
 const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
-  const isLoading = useSelector(authSelectors.isLoading);
   const {
     control,
     handleSubmit,
     setError,
-    formState: { isValid },
+    formState: { isValid, isSubmitting },
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -56,7 +55,7 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
       <Title>Log In</Title>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputsWrapper>
-          <InputField
+          <InputFormField
             control={control}
             name="email"
             placeholder="Email"
@@ -69,14 +68,14 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
               },
             }}
           />
-          <InputField
+          <InputFormField
             control={control}
             name="password"
             placeholder="Password"
             rules={{ required: 'This field is required' }}
           />
         </InputsWrapper>
-        <PrimaryButton disabled={!isValid} isLoading={isLoading}>
+        <PrimaryButton disabled={!isValid} isLoading={isSubmitting}>
           Log In
         </PrimaryButton>
       </Form>
