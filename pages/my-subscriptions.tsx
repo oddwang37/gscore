@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import styled from 'styled-components';
 
+import { withAuth } from 'hocs/withAuth';
+
 import { Header, Footer, LicenseCard, CodeAccordion, PrimaryButton } from 'components';
 import { ArrowLeft, ArrowRight } from 'components/svg';
 
@@ -56,7 +58,7 @@ const MySubscriptions: NextPage = () => {
   );
 };
 
-export default MySubscriptions;
+export default withAuth(MySubscriptions);
 
 const Container = styled.div`
   margin: 0 6%;
