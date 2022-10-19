@@ -1,13 +1,10 @@
 import {
   configureStore,
-  ThunkAction,
-  Action,
   Middleware,
   MiddlewareAPI,
   Dispatch,
   AnyAction,
   isRejectedWithValue,
-  AsyncThunkAction,
 } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';

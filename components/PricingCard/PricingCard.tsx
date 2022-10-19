@@ -74,7 +74,7 @@ const Root = styled.div<IsMainColorProp>`
   box-shadow: 0px 8px 28px rgba(0, 0, 0, 0.06);
   border-radius: 12px;
   @media (min-width: 768px) {
-    margin-bottom: ${($isMainColor) => ($isMainColor ? '5%' : '0')};
+    margin-bottom: ${({$isMainColor}) => ($isMainColor ? '5%' : '0')};
   }
 `;
 

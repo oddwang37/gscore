@@ -1,31 +1,49 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
-import { PrimaryButton } from 'components';
 import { ChevronDown, Logo } from 'components/svg';
+import { HeaderDropdown } from './components';
+import { authSelectors } from 'state/ducks/auth';
 
 const Header = () => {
+  const [isOpened, setIsOpened] = useState<boolean>(false);
+
+  const openDropdown = () => setIsOpened(true);
+  const closeDropdown = () => setIsOpened(false);
+
+  const username = useSelector(authSelectors.username);
+
   return (
     <Root>
       <Container>
         <Link href="/">
-        <SLink>
-          <Logo />
-        </SLink>
+          <SLink>
+            <Logo />
+          </SLink>
         </Link>
-        <FlexWrapper>
-          <Link href="/my-subscriptions">
-            <SLink>
-              My subscriptions
-            </SLink>
-          </Link>
-          <UserWrapper>
-            <Username>Alex</Username>
-            <ChevronDown />
-          </UserWrapper>
-         {/* <PrimaryButton>Get Gscore</PrimaryButton> */}
-        </FlexWrapper>
+        {username && (
+          <FlexWrapper>
+            <Link href="/my-subscriptions">
+              <SLink>My subscriptions</SLink>
+            </Link>
+            <UserWrapper>
+              <Username>{username}</Username>
+              <IconWrapper>
+                {isOpened ? (
+                  <ChevronUp onClick={closeDropdown}>
+                    <ChevronDown />
+                  </ChevronUp>
+                ) : (
+                  <ChevronDown onClick={openDropdown} />
+                )}
+              </IconWrapper>
+            </UserWrapper>
+            <HeaderDropdown isOpened={isOpened} closeDropdown={closeDropdown} />
+            {/* <PrimaryButton>Get Gscore</PrimaryButton> */}
+          </FlexWrapper>
+        )}
       </Container>
     </Root>
   );
@@ -38,6 +56,7 @@ const Root = styled.div`
   height: 105px;
   padding: 32px 0;
   margin-bottom: 32px;
+  position: relative;
 `;
 const Container = styled.div`
   display: flex;
@@ -64,4 +83,14 @@ const SLink = styled.a`
   cursor: pointer;
   font-weight: 500;
   font-size: 20px;
+`;
+const ChevronUp = styled.div`
+  width: 24px;
+  height: 24px;
+  transform: rotateZ(180deg);
+`;
+const IconWrapper = styled.div`
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
 `;

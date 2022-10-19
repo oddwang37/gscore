@@ -22,3 +22,5 @@ export { default as Facebook } from './Facebook';
 export { default as Twitter } from './Twitter';
 export { default as LinkedIn } from './LinkedIn';
 export { default as Delete } from './Delete';
+export { default as Logout } from './Logout';
+export { default as Settings } from './Settings';

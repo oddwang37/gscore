@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import cookies, { CookiesKeys } from 'services/cookies';
 
+import cookies, { CookiesKeys } from 'services/cookies';
 import { registerUser, loginUser, updatePersonalData, updatePassword } from './thunks';
 
 interface AuthState {
