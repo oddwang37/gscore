@@ -1,22 +1,85 @@
 import { FC } from 'react';
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import Link from 'next/link';
 import styled from 'styled-components';
+import { useForm, FieldValues } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
-import { Input, PrimaryButton } from 'components';
+import { useAppDispatch } from 'state/store';
+import { authThunks } from 'state/ducks/auth';
+import { authSelectors } from 'state/ducks/auth';
+import { PrimaryButton } from 'components';
+import { InputFormField } from '../components';
+
+interface FormValues extends FieldValues {
+  email: string;
+  password: string;
+}
 
 const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { isValid, isSubmitting },
+  } = useForm<FormValues>({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+  const dispatch = useAppDispatch();
+  const isLoading = useSelector(authSelectors.isLoading);
+
+  const onSubmit = (data: FormValues) => {
+    const { email, password } = data;
+    dispatch(authThunks.loginUser({ email, password }))
+      .unwrap()
+      .then(() => {
+        nextStep();
+      })
+      .catch(({ statusCode }) => {
+        switch (statusCode) {
+          case 400: {
+            setError('password', { type: 'server', message: 'Incorrect password' });
+            break;
+          }
+          case 404: {
+            setError('email', { type: 'server', message: 'User with this email is not found' });
+            break;
+          }
+        }
+      });
+  };
 
   return (
     <Root>
       <Title>Log In</Title>
-      <Form>
-        <Input placeholder="Email" />
-        <Input placeholder="Password" />
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputsWrapper>
+          <InputFormField
+            control={control}
+            name="email"
+            placeholder="Email"
+            rules={{
+              required: { value: true, message: 'This field is required' },
+              pattern: {
+                value:
+                  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+                message: 'Email must be valid',
+              },
+            }}
+          />
+          <InputFormField
+            control={control}
+            name="password"
+            placeholder="Password"
+            rules={{ required: 'This field is required' }}
+          />
+        </InputsWrapper>
+        <PrimaryButton disabled={!isValid} isLoading={isLoading}>
+          Log In
+        </PrimaryButton>
       </Form>
-      <PrimaryButton onClick={nextStep}>Log In</PrimaryButton>
     </Root>
   );
 };
@@ -31,14 +94,12 @@ const Root = styled.div`
   padding-bottom: 228px;
 `;
 const Title = styled.h1`
-  font-size: 44px;
-`;
-const Description = styled.div`
-  margin-top: 16px;
-  font-size: 14px;
-  line-height: 24px;
+  ${({ theme: { typography } }) => typography.title44}
 `;
 const Form = styled.form`
   margin-top: 32px;
+  margin-bottom: 48px;
+`;
+const InputsWrapper = styled.div`
   margin-bottom: 48px;
 `;
