@@ -22,6 +22,9 @@ export default withAuth(Home);
 
 const Container = styled.div`
   margin: 0 6%;
+  @media (max-width: 576px) {
+    margin: 0 4%;
+  }
 `;
 const Title = styled.div`
   color: black;

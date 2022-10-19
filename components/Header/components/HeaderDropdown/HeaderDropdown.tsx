@@ -22,21 +22,6 @@ const HeaderDropdown: FC<HeaderDropdownProps> = ({ isOpened, closeDropdown }) =>
     closeDropdown();
   };
 
-  /* useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const el = dropdownRef?.current;
-      if (!el.contains(event.target as Node)) {
-          return;
-    } else {
-      closeDropdown();
-    }
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    }
-  }
-}, []) */
-
   return (
     <Root $isOpened={isOpened}>
       <Link href="/settings">

@@ -6,7 +6,9 @@ import { Logo, Twitter, Facebook, LinkedIn } from 'components/svg';
 const Footer = () => {
   return (
     <Root>
-      <Logo />
+     <LogoWrapper>
+        <Logo />
+      </LogoWrapper>
       <Text>Ut enim ad minim veniam quis nostrud exercitation ea commodo</Text>
       <Contacts>
         <CopyrightText>
@@ -35,6 +37,11 @@ const Text = styled.div`
   margin-bottom: 60px;
   width: 25%;
 `;
+const LogoWrapper = styled.div`
+  @media (max-width: 576px) {
+    transform: scale(0.8) translateX(-12%);
+  }
+`
 const Contacts = styled.div`
   border-top: 1px solid #393939;
   padding: 44px 0;

@@ -3,15 +3,20 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import { ChevronDown, Logo } from 'components/svg';
-import { HeaderDropdown } from './components';
+import { ChevronDown, Logo, Burger } from 'components/svg';
+import { HeaderDropdown, RightMenu } from './components';
 import { authSelectors } from 'state/ducks/auth';
 
 const Header = () => {
-  const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
 
-  const openDropdown = () => setIsOpened(true);
-  const closeDropdown = () => setIsOpened(false);
+  const openDropdown = () => setIsDropdownOpened(true);
+  const closeDropdown = () => setIsDropdownOpened(false);
+
+  const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+
+  const openMenu = () => setIsMenuOpened(true);
+  const closeMenu = () => setIsMenuOpened(false);
 
   const username = useSelector(authSelectors.username);
 
@@ -20,29 +25,37 @@ const Header = () => {
       <Container>
         <Link href="/">
           <SLink>
-            <Logo />
+            <LogoWrapper>
+              <Logo />
+            </LogoWrapper>
           </SLink>
         </Link>
         {username && (
-          <FlexWrapper>
-            <Link href="/my-subscriptions">
-              <SLink>My subscriptions</SLink>
-            </Link>
-            <UserWrapper>
-              <Username>{username}</Username>
-              <IconWrapper>
-                {isOpened ? (
-                  <ChevronUp onClick={closeDropdown}>
-                    <ChevronDown />
-                  </ChevronUp>
-                ) : (
-                  <ChevronDown onClick={openDropdown} />
-                )}
-              </IconWrapper>
-            </UserWrapper>
-            <HeaderDropdown isOpened={isOpened} closeDropdown={closeDropdown} />
-            {/* <PrimaryButton>Get Gscore</PrimaryButton> */}
-          </FlexWrapper>
+          <>
+            <FlexWrapper>
+              <Link href="/my-subscriptions">
+                <SLink>My subscriptions</SLink>
+              </Link>
+              <UserWrapper>
+                <Username>{username}</Username>
+                <IconWrapper>
+                  {isDropdownOpened ? (
+                    <ChevronUp onClick={closeDropdown}>
+                      <ChevronDown />
+                    </ChevronUp>
+                  ) : (
+                    <ChevronDown onClick={openDropdown} />
+                  )}
+                </IconWrapper>
+              </UserWrapper>
+              <HeaderDropdown isOpened={isDropdownOpened} closeDropdown={closeDropdown} />
+              {/* <PrimaryButton>Get Gscore</PrimaryButton> */}
+            </FlexWrapper>
+            <BurgerMenu onClick={openMenu}>
+              <Burger />
+            </BurgerMenu>
+            <RightMenu closeMenu={closeMenu} isOpened={isMenuOpened} />
+          </>
         )}
       </Container>
     </Root>
@@ -57,6 +70,11 @@ const Root = styled.div`
   padding: 32px 0;
   margin-bottom: 32px;
   position: relative;
+  @media (max-width: 576px) {
+    margin-top: 20px;
+    padding: 0;
+    position: static;
+  }
 `;
 const Container = styled.div`
   display: flex;
@@ -72,6 +90,9 @@ const FlexWrapper = styled.div`
   display: flex;
   gap: 32px;
   align-items: center;
+  @media (max-width: 576px) {
+    display: none;
+  }
 `;
 const Username = styled.div`
   font-size: 20px;
@@ -79,10 +100,16 @@ const Username = styled.div`
   text-transform: capitalize;
   align-items: center;
 `;
+const LogoWrapper = styled.div`
+  @media (max-width: 576px) {
+    transform: scale(0.8) translateX(-12%);
+  }
+`;
 const SLink = styled.a`
   cursor: pointer;
   font-weight: 500;
   font-size: 20px;
+  display: block;
 `;
 const ChevronUp = styled.div`
   width: 24px;
@@ -93,4 +120,10 @@ const IconWrapper = styled.div`
   cursor: pointer;
   width: 24px;
   height: 24px;
+`;
+const BurgerMenu = styled.div`
+  display: none;
+  @media (max-width: 576px) {
+    display: block;
+  }
 `;
