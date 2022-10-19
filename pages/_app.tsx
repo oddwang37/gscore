@@ -1,10 +1,12 @@
 import type { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { Provider } from 'react-redux';
+import styled from 'styled-components';
 
-import { persistor, store } from 'state/store';
+import { wrapper } from 'state/store';
 import 'fonts.css';
+
+import { Header, Footer } from 'components';
 
 const GlobalStyles = createGlobalStyle`
 html {
@@ -83,17 +85,28 @@ const theme = {
   },
 };
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, ...rest }: AppProps) {
+  const { store, props } = wrapper.useWrappedStore(rest);
+
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
-          <GlobalStyles />
-        </ThemeProvider>
-      </PersistGate>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <Container>
+          <Header />
+          <Component {...props.pageProps} />
+          <Footer />
+        </Container>
+      </Provider>
+      <GlobalStyles />
+    </ThemeProvider>
   );
 }
 
 export default MyApp;
+
+const Container = styled.div`
+  margin: 0 6%;
+  @media (max-width: 576px) {
+    margin: 0 4%;
+  }
+`;

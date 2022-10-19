@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { withAuth } from 'hocs/withAuth';
 
-import { Header, Footer, LicenseCard, CodeAccordion, PrimaryButton } from 'components';
+import { LicenseCard, CodeAccordion, PrimaryButton } from 'components';
 import { ArrowLeft, ArrowRight } from 'components/svg';
 
 const MySubscriptions: NextPage = () => {
@@ -21,13 +21,10 @@ const MySubscriptions: NextPage = () => {
 
   return (
     <>
-      <Container>
-        <Header />
-        <HeadingWrapper>
-          <Heading>My Subscriptions</Heading>
-          <PrimaryButton>Upgrade</PrimaryButton>
-        </HeadingWrapper>
-      </Container>
+      <HeadingWrapper>
+        <Heading>My Subscriptions</Heading>
+        <PrimaryButton>Upgrade</PrimaryButton>
+      </HeadingWrapper>
       <LicenseSlider>
         <SliderWrapper>
           <LicenseCard status="active" />
@@ -35,25 +32,22 @@ const MySubscriptions: NextPage = () => {
           <LicenseCard status="inactive" />
         </SliderWrapper>
       </LicenseSlider>
-      <Container>
-        <SliderNavigation>
-          <NavButton onClick={nextSlide}>
-            <ArrowLeft />
-          </NavButton>
-          <SlidesQuantity>
-            <CurrentSlide>1/</CurrentSlide>10
-          </SlidesQuantity>
-          <NavButton onClick={prevSlide}>
-            <ArrowRight />
-          </NavButton>
-        </SliderNavigation>
-        <CodesWrapper>
-          <CodeAccordion />
-          <CodeAccordion />
-          <CodeAccordion />
-        </CodesWrapper>
-        <Footer />
-      </Container>
+      <SliderNavigation>
+        <NavButton onClick={nextSlide}>
+          <ArrowLeft />
+        </NavButton>
+        <SlidesQuantity>
+          <CurrentSlide>1/</CurrentSlide>10
+        </SlidesQuantity>
+        <NavButton onClick={prevSlide}>
+          <ArrowRight />
+        </NavButton>
+      </SliderNavigation>
+      <CodesWrapper>
+        <CodeAccordion />
+        <CodeAccordion />
+        <CodeAccordion />
+      </CodesWrapper>
     </>
   );
 };

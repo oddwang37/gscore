@@ -2,15 +2,13 @@ import React, { FC } from 'react';
 import Link from 'next/Link';
 import styled from 'styled-components';
 
-import { useAppDispatch } from 'state/store';
-import { SecondaryButton } from 'components';
 import { Check } from 'components/svg';
 
-const PricingCard: FC<PricingCardProps> = ({ price, sitesQuantity, isMainColor }) => {
+const PricingCard: FC<PricingCardProps> = ({ name, price, sitesQuantity, isMainColor }) => {
   return (
     <Root $isMainColor={isMainColor}>
       <Price>${price}</Price>
-      <SitesQuantity>{sitesQuantity === 1 ? 'Single' : sitesQuantity} Site license</SitesQuantity>
+      <SitesQuantity>{name}</SitesQuantity>
       <Description $isMainColor={isMainColor}>
         Get the advanced WordPress plugin that optimizes content with GSC keywords at one low annual
         price
@@ -58,7 +56,8 @@ const PricingCard: FC<PricingCardProps> = ({ price, sitesQuantity, isMainColor }
 export default PricingCard;
 
 type PricingCardProps = {
-  price: number;
+  name: string;
+  price: string;
   sitesQuantity: number;
   isMainColor?: boolean;
 };
@@ -74,7 +73,7 @@ const Root = styled.div<IsMainColorProp>`
   box-shadow: 0px 8px 28px rgba(0, 0, 0, 0.06);
   border-radius: 12px;
   @media (min-width: 768px) {
-    margin-bottom: ${({$isMainColor}) => ($isMainColor ? '5%' : '0')};
+    margin-bottom: ${({ $isMainColor }) => ($isMainColor ? '5%' : '0')};
   }
 `;
 

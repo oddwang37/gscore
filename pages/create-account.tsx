@@ -3,8 +3,7 @@ import type { NextPage } from 'next';
 import styled from 'styled-components';
 import { useAppDispatch } from 'state/store';
 
-import { getMe } from 'state/ducks/auth/thunks';
-import { Header, Steps, CreateAccountForm, LogInForm, CheckoutForm, Footer } from 'components';
+import { Steps, CreateAccountForm, LogInForm, CheckoutForm } from 'components';
 
 const CreateAccount: NextPage = () => {
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
@@ -19,25 +18,18 @@ const CreateAccount: NextPage = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <Container>
-      <Header />
-      <Wrapper>
-        <Steps
-          contentArray={contentArray}
-          stepHeaders={stepHeaders}
-          activeStepIndex={activeStepIndex}
-        />
-      </Wrapper>
-      <Footer />
-    </Container>
+    <Wrapper>
+      <Steps
+        contentArray={contentArray}
+        stepHeaders={stepHeaders}
+        activeStepIndex={activeStepIndex}
+      />
+    </Wrapper>
   );
 };
 
 export default CreateAccount;
 
-const Container = styled.div`
-  margin: 0 6%;
-`;
 const Wrapper = styled.div`
   width: 50%;
   margin: 0 auto;

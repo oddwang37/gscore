@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -6,8 +6,12 @@ import { useSelector } from 'react-redux';
 import { ChevronDown, Logo, Burger } from 'components/svg';
 import { HeaderDropdown, RightMenu } from './components';
 import { authSelectors } from 'state/ducks/auth';
+import { getMe } from 'state/ducks/auth/thunks';
+import { useAppDispatch } from 'state/store';
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+
   const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
 
   const openDropdown = () => setIsDropdownOpened(true);
@@ -20,6 +24,9 @@ const Header = () => {
 
   const username = useSelector(authSelectors.username);
 
+  useEffect(() => {
+    dispatch(getMe());
+  });
   return (
     <Root>
       <Container>
