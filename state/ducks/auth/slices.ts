@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import cookies, { CookiesKeys } from 'services/cookies';
-import { registerUser, loginUser, updatePersonalData, updatePassword } from './thunks';
+import { registerUser, loginUser, updatePersonalData, updatePassword, getMe } from './thunks';
 
 interface AuthState {
   userInfo: {
@@ -22,7 +22,7 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: 'some',
+  name: 'auth',
   initialState,
   reducers: {
     logout: (state) => {
@@ -76,6 +76,9 @@ const authSlice = createSlice({
     });
     builder.addCase(updatePassword.rejected, (state, action) => {
       state.isLoading = false;
+    });
+    builder.addCase(getMe.fulfilled, (state, action) => {
+      state.userInfo = action.payload;
     });
   },
 });
