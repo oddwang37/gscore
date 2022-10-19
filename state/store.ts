@@ -1,22 +1,33 @@
 import {
   configureStore,
   Middleware,
+  MiddlewareArray,
   MiddlewareAPI,
   Dispatch,
   AnyAction,
   isRejectedWithValue,
+  Action,
+  ThunkAction,
+  EnhancedStore,
+  CombinedState,
 } from '@reduxjs/toolkit';
+import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import { useDispatch } from 'react-redux';
-import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-
 import rootReducer from './ducks';
 import { logout } from './ducks/auth';
 
-const persistConfig = {
-  key: 'root',
-  storage,
+const reducer: typeof rootReducer = (state, action: AnyAction) => {
+  if (action.type === HYDRATE) {
+    const nextState = {
+      ...state,
+      ...action.payload,
+    };
+    return nextState;
+  } else {
+    return rootReducer(state, action);
+  }
 };
+
 export const errorMiddleware: Middleware =
   (api: MiddlewareAPI) =>
   (next: Dispatch) =>
@@ -30,15 +41,22 @@ export const errorMiddleware: Middleware =
     return next(action);
   };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+export const makeStore = () =>
+  configureStore({
+    reducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(errorMiddleware),
+  });
 
-export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(errorMiddleware),
-});
+type Store = ReturnType<typeof makeStore>;
 
-export const persistor = persistStore(store);
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = Store['dispatch'];
+export type RootState = ReturnType<Store['getState']>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;
 export const useAppDispatch: () => AppDispatch = useDispatch;
+
+export const wrapper = createWrapper(makeStore, { debug: true });

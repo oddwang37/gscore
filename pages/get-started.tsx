@@ -2,23 +2,21 @@ import { useState } from 'react';
 import type { NextPage } from 'next';
 import styled from 'styled-components';
 
-import { Header, PricingCard, Footer } from 'components';
+import { PricingCard } from 'components';
 
 const GetStarted: NextPage = () => {
   return (
     <Container>
-      <Header />
       <Title>Get started with Gscore today</Title>
       <PricingCardsWrapper>
-        <PricingCard price={77} sitesQuantity={1} />
+        {/* <PricingCard price={77} sitesQuantity={1} />
         <PricingCard price={117} sitesQuantity={3} isMainColor />
-        <PricingCard price={167} sitesQuantity={10} />
+        <PricingCard price={167} sitesQuantity={10} /> */}
       </PricingCardsWrapper>
       <OtherTariff>
         Have more than 10 sites?
         <ContactUsLink>Contact us</ContactUsLink>
       </OtherTariff>
-      <Footer />
     </Container>
   );
 };
