@@ -1,8 +1,9 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm, FieldValues } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
+import cookies, { CookiesKeys } from 'services/cookies';
 import { useAppDispatch } from 'state/store';
 import { authThunks } from 'state/ducks/auth';
 import { authSelectors } from 'state/ducks/auth';
@@ -29,6 +30,13 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
   });
   const dispatch = useAppDispatch();
   const isLoading = useSelector(authSelectors.isLoading);
+
+  useEffect(() => {
+    const token = cookies.getItem(CookiesKeys.token);
+    if (token) {
+      nextStep();
+    }
+  });
 
   const onSubmit = (data: FormValues) => {
     const { email, password } = data;

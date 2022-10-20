@@ -21,6 +21,7 @@ const GetStarted: NextPage<GetStartedProps> = ({ products }) => {
             sitesQuantity={product.sitesCount}
             key={product.id}
             isMainColor={i === 1 ? true : false}
+            id={product.id}
           />
         ))}
       </PricingCardsWrapper>

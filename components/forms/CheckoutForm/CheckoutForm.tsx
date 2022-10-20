@@ -1,12 +1,42 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import _ from 'lodash';
 
-import { InputBase, PrimaryButton } from 'components';
+import { buySubscribe, getSubscribes } from 'state/ducks/subscribes/thunks';
+import { useAppDispatch } from 'state/store';
+import { Product } from 'state/ducks/products/types';
+import { productsSelectors } from 'state/ducks/products';
+import { PrimaryButton } from 'components';
 import { Delete } from 'components/svg';
 
-const CreateAccountForm = () => {
+const CheckoutForm = () => {
+  const productsList = useSelector(productsSelectors.list);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const [subInfo, setSubInfo] = useState<Product | undefined>();
+  const getProduct = () => {
+    const id = Number(router.query.priceId);
+    // if user reloads page query parameter disappears and product info become empty(
+    if (id) {
+      return _.find(productsList, { id: id });
+    } else {
+      router.push('/');
+    }
+  };
+
+  useEffect(() => {
+    setSubInfo(getProduct());
+  }, []);
+
+  const onPurchase = () => {
+    if (subInfo) {
+      dispatch(buySubscribe({ priceId: subInfo.id }));
+    }
+  };
+
   return (
     <Root>
       <Title>Checkout</Title>
@@ -16,23 +46,23 @@ const CreateAccountForm = () => {
           <div>Price</div>
         </Header>
         <ListItem>
-          <div>Single site license</div>
+          <div>{subInfo?.name}</div>
           <Wrapper>
-            <div>$77</div>
+            <div>${subInfo?.prices[0].price}</div>
             <Delete />
           </Wrapper>
         </ListItem>
       </ListWrapper>
       <TotalWrapper>
         <div>Total:</div>
-        <div>$77</div>
+        <div>${subInfo?.prices[0].price}</div>
       </TotalWrapper>
-      <PrimaryButton>Purschase</PrimaryButton>
+      <PrimaryButton onClick={onPurchase}>Purschase</PrimaryButton>
     </Root>
   );
 };
 
-export default CreateAccountForm;
+export default CheckoutForm;
 
 const Root = styled.div`
   padding-top: 64px;
