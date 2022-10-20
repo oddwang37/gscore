@@ -1,12 +1,30 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import _ from 'lodash';
 
-import { InputBase, PrimaryButton } from 'components';
+import { Product } from 'state/ducks/products/types';
+import { productsSelectors } from 'state/ducks/products';
+import { PrimaryButton } from 'components';
 import { Delete } from 'components/svg';
 
-const CreateAccountForm = () => {
+const CheckoutForm = () => {
+  const productsList = useSelector(productsSelectors.list);
+  const router = useRouter();
+
+  const [subInfo, setSubInfo] = useState<Product | undefined>();
+  const getProduct = () => {
+    const id = Number(router.query.priceId);
+    return _.find(productsList, { id: id });
+  };
+
+  useEffect(() => {
+    setSubInfo(getProduct());
+  }, []);
+
   return (
     <Root>
       <Title>Checkout</Title>
@@ -16,9 +34,9 @@ const CreateAccountForm = () => {
           <div>Price</div>
         </Header>
         <ListItem>
-          <div>Single site license</div>
+          <div>{subInfo?.name}</div>
           <Wrapper>
-            <div>$77</div>
+            <div>${subInfo?.prices[0].price}</div>
             <Delete />
           </Wrapper>
         </ListItem>
@@ -32,7 +50,7 @@ const CreateAccountForm = () => {
   );
 };
 
-export default CreateAccountForm;
+export default CheckoutForm;
 
 const Root = styled.div`
   padding-top: 64px;

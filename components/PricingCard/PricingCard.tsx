@@ -1,10 +1,16 @@
 import React, { FC } from 'react';
 import Link from 'next/Link';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 import { Check } from 'components/svg';
 
-const PricingCard: FC<PricingCardProps> = ({ name, price, sitesQuantity, isMainColor }) => {
+const PricingCard: FC<PricingCardProps> = ({ name, price, sitesQuantity, isMainColor, id }) => {
+  const router = useRouter();
+
+  const toCheckout = () =>
+    router.push({ pathname: '/create-account', query: { priceId: id.toString() } });
+
   return (
     <Root $isMainColor={isMainColor}>
       <Price>${price}</Price>
@@ -46,9 +52,9 @@ const PricingCard: FC<PricingCardProps> = ({ name, price, sitesQuantity, isMainC
           <ListItemText>Billed annually</ListItemText>
         </ListItem>
       </List>
-      <Link href="/create-account">
-        <Button $isMainColor={isMainColor}>Get Gscore</Button>
-      </Link>
+      <Button onClick={toCheckout} $isMainColor={isMainColor}>
+        Get Gscore
+      </Button>
     </Root>
   );
 };
@@ -60,6 +66,7 @@ type PricingCardProps = {
   price: string;
   sitesQuantity: number;
   isMainColor?: boolean;
+  id: number;
 };
 
 type IsMainColorProp = {
