@@ -1,11 +1,11 @@
-import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
 
+import { buySubscribe, getSubscribes } from 'state/ducks/subscribes/thunks';
+import { useAppDispatch } from 'state/store';
 import { Product } from 'state/ducks/products/types';
 import { productsSelectors } from 'state/ducks/products';
 import { PrimaryButton } from 'components';
@@ -14,16 +14,28 @@ import { Delete } from 'components/svg';
 const CheckoutForm = () => {
   const productsList = useSelector(productsSelectors.list);
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const [subInfo, setSubInfo] = useState<Product | undefined>();
   const getProduct = () => {
     const id = Number(router.query.priceId);
-    return _.find(productsList, { id: id });
+    // if user reloads page query parameter disappears and product info become empty(
+    if (id) {
+      return _.find(productsList, { id: id });
+    } else {
+      router.push('/');
+    }
   };
 
   useEffect(() => {
     setSubInfo(getProduct());
   }, []);
+
+  const onPurchase = () => {
+    if (subInfo) {
+      dispatch(buySubscribe({ priceId: subInfo.id }));
+    }
+  };
 
   return (
     <Root>
@@ -43,9 +55,9 @@ const CheckoutForm = () => {
       </ListWrapper>
       <TotalWrapper>
         <div>Total:</div>
-        <div>$77</div>
+        <div>${subInfo?.prices[0].price}</div>
       </TotalWrapper>
-      <PrimaryButton>Purschase</PrimaryButton>
+      <PrimaryButton onClick={onPurchase}>Purschase</PrimaryButton>
     </Root>
   );
 };
