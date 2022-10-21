@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import Link from 'next/Link';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 

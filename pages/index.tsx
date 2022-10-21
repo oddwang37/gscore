@@ -3,15 +3,16 @@ import type { NextPage } from 'next';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import { wrapper } from 'state/store';
-import { productsSelectors } from 'state/ducks/products';
-import { PricingCard } from 'components';
+import { RootState, wrapper } from 'state/store';
+import { PricingCard, Container } from 'components';
 import { getProductsList } from 'state/ducks/products/thunks';
 import { Products, Product } from 'state/ducks/products/types';
 
-const GetStarted: NextPage<GetStartedProps> = ({ products }) => {
+const GetStarted: NextPage<GetStartedProps> = () => {
+  const products = useSelector((state: RootState) => state.products.list);
+
   return (
-    <div>
+    <Container>
       <Title>Get started with Gscore today</Title>
       <PricingCardsWrapper>
         {products.map((product, i) => (
@@ -29,18 +30,17 @@ const GetStarted: NextPage<GetStartedProps> = ({ products }) => {
         Have more than 10 sites?
         <ContactUsLink>Contact us</ContactUsLink>
       </OtherTariff>
-    </div>
+    </Container>
   );
 };
 
 export default GetStarted;
 
-export const getStaticProps = wrapper.getStaticProps((store) => async ({ preview }) => {
-  let result;
+export const getStaticProps = wrapper.getStaticProps((store) => async () => {
   try {
-    result = await store.dispatch(getProductsList()).unwrap();
+    await store.dispatch(getProductsList()).unwrap();
   } catch (e) {}
-  return { props: { products: result } };
+  return { props: {} };
 });
 
 type GetStartedProps = {

@@ -45,8 +45,8 @@ const Root = styled.div<RootProps>`
   background-color: #393939;
   box-shadow: 0px 24px 65px rgba(0, 0, 0, 0.12);
   border-radius: 12px;
-  width: 620px;
   opacity: ${(p) => (p.disabled ? 0.6 : 1)};
+  width: 100%;
 `;
 const Header = styled.div`
   padding: 48px 64px 32px 32px;

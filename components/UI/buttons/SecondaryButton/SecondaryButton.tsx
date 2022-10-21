@@ -18,6 +18,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Root = styled(BaseButton)`
+  color: ${({ theme }) => theme.colors.primaryColor};
   background-color: #fff;
   &:hover {
     background-color: #fbfbfb;

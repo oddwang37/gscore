@@ -1,12 +1,11 @@
 import type { AppProps } from 'next/app';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
-import styled from 'styled-components';
 
 import { wrapper } from 'state/store';
 import 'fonts.css';
 
-import { Header, Footer } from 'components';
+import { Header, Footer, Container } from 'components';
 
 const GlobalStyles = createGlobalStyle`
 html {
@@ -93,7 +92,9 @@ function MyApp({ Component, ...rest }: AppProps) {
       <Provider store={store}>
         <Container>
           <Header />
-          <Component {...props.pageProps} />
+        </Container>
+        <Component {...props.pageProps} />
+        <Container>
           <Footer />
         </Container>
       </Provider>
@@ -103,10 +104,3 @@ function MyApp({ Component, ...rest }: AppProps) {
 }
 
 export default MyApp;
-
-const Container = styled.div`
-  margin: 0 6%;
-  @media (max-width: 576px) {
-    margin: 0 4%;
-  }
-`;

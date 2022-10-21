@@ -29,11 +29,13 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     setSubInfo(getProduct());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onPurchase = () => {
     if (subInfo) {
       dispatch(buySubscribe({ priceId: subInfo.id }));
+      router.push('/my-subscriptions');
     }
   };
 
