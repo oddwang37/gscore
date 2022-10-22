@@ -20,7 +20,7 @@ const MySubscriptions: NextPage = () => {
   const { height, width } = useWindowDimensions();
 
   const nextSlide = () => {
-    if (currentSlide !== subscribes.length / 2 - 1) {
+    if (currentSlide !== subscribes.length - 1) {
       setCurrentSlide((prev) => ++prev);
     }
   };
@@ -33,7 +33,7 @@ const MySubscriptions: NextPage = () => {
   const [currentTranslate, setCurrentTranslate] = useState<number>(0);
   const [slideWidth, setSlideWidth] = useState<number>(620);
   useEffect(() => {
-    setCurrentTranslate(-1 * currentSlide * (slideWidth * 2 + 52));
+    setCurrentTranslate(-1 * currentSlide * (slideWidth + 28));
   }, [currentSlide]);
 
   useEffect(() => {
@@ -51,9 +51,9 @@ const MySubscriptions: NextPage = () => {
       </Container>
       <LicenseSlider>
         <SliderWrapper $translate={currentTranslate}>
-          {subscribes.map((subscribe: any) => (
+          {subscribes.map((subscribe: any, index) => (
             <SliderItem $width={slideWidth} key={subscribe.id}>
-              <LicenseCard status="active" />
+              <LicenseCard status="active" disabled={currentSlide !== index}/>
             </SliderItem>
           ))}
         </SliderWrapper>
@@ -64,10 +64,10 @@ const MySubscriptions: NextPage = () => {
             <ArrowLeft />
           </NavButtonLeft>
           <SlidesQuantity>
-            <CurrentSlide>{currentSlide * 2 + 1}/</CurrentSlide>
-            {subscribes.length - 1}
+            <CurrentSlide>{currentSlide + 1}/</CurrentSlide>
+            {subscribes.length}
           </SlidesQuantity>
-          <NavButtonRight $inactive={currentSlide >= subscribes.length / 2 - 1} onClick={nextSlide}>
+          <NavButtonRight $inactive={currentSlide >= subscribes.length - 1} onClick={nextSlide}>
             <ArrowRight />
           </NavButtonRight>
         </SliderNavigation>
