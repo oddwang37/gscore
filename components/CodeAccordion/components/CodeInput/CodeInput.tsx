@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 import { Copy } from 'components/svg';
 
-const CodeInput: FC<CodeInputProps> = ({ copyable }) => {
+const CodeInput: FC<CodeInputProps> = ({ copyable, code }) => {
   return (
     <Root>
-      <Field $copyable={copyable} readOnly />
+      <Field $copyable={copyable} readOnly defaultValue={code}/>
       {copyable && (
         <IconWrapper>
           <Copy />
@@ -20,6 +20,7 @@ export default CodeInput;
 
 type CodeInputProps = {
   copyable?: boolean;
+  code: string;
 };
 
 type FieldProps = {

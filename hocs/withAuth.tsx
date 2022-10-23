@@ -18,6 +18,3 @@ export const withAuth = <P extends object>(Component: FC<P>) => {
 
   return Wrapper;
 };
- 
-
-export {};

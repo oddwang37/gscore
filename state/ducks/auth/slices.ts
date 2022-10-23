@@ -49,10 +49,8 @@ const authSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      console.log(action.payload);
       cookies.setItem(CookiesKeys.token, action.payload.token);
       state.userInfo = action.payload.user;
-      console.log(action.payload);
       state.isLoading = false;
     });
     builder.addCase(loginUser.rejected, (state, action) => {

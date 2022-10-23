@@ -12,6 +12,7 @@ export {
   StepHeader,
   Accordion,
   Loader,
+  Container,
 } from './UI';
 export { Header } from './Header';
 export { CodeAccordion } from './CodeAccordion';
