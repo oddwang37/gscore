@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getProductsList } from './thunks';
 import type { Products } from './types';
 
-interface AuthState {
+interface ProductsState {
   list: Products;
 }
 
-const initialState: AuthState = {
+const initialState: ProductsState = {
   list: [],
 };
 

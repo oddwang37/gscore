@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { intervalToDuration, add, format } from 'date-fns';
 
 import { withAuth } from 'hocs/withAuth';
 import { useWindowDimensions } from 'hooks/getWindowDimensions';
@@ -41,6 +42,12 @@ const MySubscriptions: NextPage = () => {
     setSlideWidth((width * 0.82) / 2 + 14);
   }, []);
 
+  const formatPeriodEnd = (seconds: string) => {
+    const durationFrom0 = intervalToDuration({ start: 0, end: Number(seconds) * 1000 });
+    const newDate = add(new Date(0), durationFrom0);
+    return format(newDate, 'dd.MM.yyyy');
+  };
+
   return (
     <div>
       <Container>
@@ -53,7 +60,13 @@ const MySubscriptions: NextPage = () => {
         <SliderWrapper $translate={currentTranslate}>
           {subscribes.map((subscribe: any, index) => (
             <SliderItem $width={slideWidth} key={subscribe.id}>
-              <LicenseCard status="active" disabled={currentSlide !== index}/>
+              <LicenseCard
+                name={subscribe.product.name}
+                currentPeriodEnd={formatPeriodEnd(subscribe.currentPeriodEnd)}
+                status={subscribe.status}
+                disabled={currentSlide !== index}
+                price={subscribe.product.prices[0].price}
+              />
             </SliderItem>
           ))}
         </SliderWrapper>
@@ -72,9 +85,10 @@ const MySubscriptions: NextPage = () => {
           </NavButtonRight>
         </SliderNavigation>
         <CodesWrapper>
-          <CodeAccordion />
-          <CodeAccordion />
-          <CodeAccordion />
+          {subscribes[currentSlide] &&
+            subscribes[currentSlide].codes.map((code) => (
+              <CodeAccordion status={code.status} code={code.code} key={code.id} />
+            ))}
         </CodesWrapper>
       </Container>
     </div>

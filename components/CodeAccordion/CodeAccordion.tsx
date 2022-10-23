@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 
-import { SecondaryButton, Checkbox } from 'components';
+import { Checkbox } from 'components';
+import SecondaryButton from 'components/UI/buttons/SecondaryButton/SecondaryButton';
 import { CodeInput } from './components';
 
-const CodeAccordion = () => {
+const CodeAccordion: FC<CodeAccordionProps> = ({ code, status }) => {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const status = 'active';
 
   const switchOpened = () => {
     setIsOpened((prev) => !prev);
@@ -14,34 +14,36 @@ const CodeAccordion = () => {
 
   return (
     <Root onClick={switchOpened}>
-      <Checkbox />
-      <div>
-        {isOpened && <Heading>License code</Heading>}
-        <CodeInput copyable />
-      </div>
-      <div>
-        {isOpened && <Heading>Domain</Heading>}
+      <Grid $status={status} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+        <Checkbox />
+        <CodeInput copyable code={code} />
         <CodeInput />
-      </div>
-      <div>
-        {isOpened && (
-          <Heading>
-            <InvisibleText>text</InvisibleText>
-          </Heading>
+        {status === 'INACTIVE' && (
+          <div>
+            {isOpened && (
+              <Heading>
+                <InvisibleText>text</InvisibleText>
+              </Heading>
+            )}
+            <Button>Activate</Button>
+          </div>
         )}
-        <SecondaryButton>Activate</SecondaryButton>
-      </div>
-      <div>
-        {isOpened && <Heading>Status</Heading>}
-        <Status $status={status}>{status}</Status>
-      </div>
+        <Status $status={status}>{status.toLowerCase()}</Status>
+      </Grid>
     </Root>
   );
 };
 
 export default CodeAccordion;
 
-type Status = 'active' | 'hold' | 'inactive';
+type CodeAccordionProps = {
+  code: string;
+  status: Status;
+};
+type GridProps = {
+  $status: Status;
+};
+type Status = 'ACTIVE' | 'HOLD' | 'INACTIVE';
 
 type StatusProps = {
   $status: Status;
@@ -52,12 +54,16 @@ const Root = styled.div`
   padding: 2.5% 6% 2.5% 2.5%;
   background-color: #272727;
   border-radius: 12px;
-  display: grid;
-  grid-template-columns: 5% 24% 1fr 10% 8%;
-  gap: 20px;
-  grid-template-rows: 1fr;
-  align-items: center;
   cursor: pointer;
+`;
+const Grid = styled.div<GridProps>`
+  display: grid;
+  grid-template-columns: ${({ $status }) =>
+    $status === 'INACTIVE' ? '0.5fr 3fr 4fr 1fr 1fr' : '0.5fr 3fr 6fr 1fr'};
+  wrap: nowrap;
+  gap: 20px;
+  grid-template-rows: 2fr;
+  align-items: center;
 `;
 const Heading = styled.div`
   color: #969696;
@@ -67,17 +73,24 @@ const Heading = styled.div`
 const InvisibleText = styled.div`
   opacity: 0;
 `;
+const Button = styled(SecondaryButton)`
+  padding: 20px;
+  margin: 0 5px 0 20px;
+  @media (max-width: 768px) {
+    margin: 0 10px;
+  }
+`;
 const Status = styled.div<StatusProps>`
   ${({ theme: { typography } }) => typography.title22};
   text-transform: capitalize;
   justify-self: end;
   color: ${({ $status, theme: { colors } }) => {
     switch ($status) {
-      case 'active':
+      case 'ACTIVE':
         return colors.green;
-      case 'hold':
+      case 'HOLD':
         return colors.orange;
-      case 'inactive':
+      case 'INACTIVE':
         return colors.red400;
     }
   }};
