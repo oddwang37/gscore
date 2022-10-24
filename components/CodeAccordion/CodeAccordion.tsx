@@ -46,8 +46,15 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
       </Grid>
       <MobileWrapper>
         <MobileHeader>  
-        <Checkbox />
-        <Status $status={status}>{status.toLowerCase()}</Status>
+          <StatusWrapper>
+            <Checkbox />
+            <Status $status={status}>{status.toLowerCase()}</Status>
+          </StatusWrapper>
+          {status === 'INACTIVE' && (
+          <Button isLoading={isLoading} onClick={onActivateClick}>
+            Activate
+          </Button>
+        )}
         </MobileHeader>
         <MobileElement>
           <Heading>License code</Heading>
@@ -115,6 +122,11 @@ const MobileWrapper = styled.div`
   }
 `
 const MobileHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const StatusWrapper = styled.div`
   display: flex;
   gap: 20px;
 `

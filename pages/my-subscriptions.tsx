@@ -47,7 +47,7 @@ const MySubscriptions: NextPage = () => {
 
   useEffect(() => {
     if (width < 768) {
-      setSlideWidth(width * 0.82 + 14);
+      setSlideWidth(width * 0.82 + 20);
     } else {
       setSlideWidth((width * 0.82) / 2 + 14);
     }
