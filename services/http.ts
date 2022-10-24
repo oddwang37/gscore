@@ -1,8 +1,10 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import cookies, { CookiesKeys } from 'services/cookies';
+import _ from 'lodash';
 
+const _baseUrl = 'https://gscore-back.herokuapp.com/api/';
 const instance = axios.create({
-  baseURL: 'https://gscore-back.herokuapp.com/api/',
+  baseURL: _baseUrl,
 });
 
 instance.interceptors.request.use((config) => {
@@ -15,7 +17,11 @@ instance.interceptors.request.use((config) => {
 
 class Http {
   async get(endpoint: string, config: AxiosRequestConfig = {}) {
-    return await instance.get(endpoint, config);
+    if (_.isEmpty(config)) {
+      return await instance.get(endpoint, config);
+    } else {
+      return await axios.get(_baseUrl + endpoint, config);
+    }
   }
   async post(endpoint: string, requestBody: object, config: AxiosRequestConfig = {}) {
     return await instance.post(endpoint, requestBody, config);

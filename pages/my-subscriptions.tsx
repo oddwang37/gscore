@@ -4,11 +4,16 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { intervalToDuration, add, format } from 'date-fns';
 
+import { RootState } from 'state/store';
+import { Subscribes } from 'state/ducks/subscribes/types';
 import { withAuth } from 'hocs/withAuth';
 import { useWindowDimensions } from 'hooks/getWindowDimensions';
 import { wrapper, useAppDispatch } from 'state/store';
+import { getCodes } from 'state/ducks/codes/thunks';
 import { getSubscribes } from 'state/ducks/subscribes/thunks';
 import { subscribesSelectors } from 'state/ducks/subscribes';
+import { codesSelectors } from 'state/ducks/codes';
+import cookies, { CookiesKeys } from 'services/cookies';
 
 import { LicenseCard, CodeAccordion, PrimaryButton, Container } from 'components';
 import { ArrowLeft, ArrowRight } from 'components/svg';
@@ -16,7 +21,9 @@ import { ArrowLeft, ArrowRight } from 'components/svg';
 const MySubscriptions: NextPage = () => {
   const subscribes = useSelector(subscribesSelectors.mySubscriptions);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const dispatch = useAppDispatch();
+  const codes = useSelector((state: RootState) =>
+    subscribes[currentSlide] ? codesSelectors.codesOfSub(state, subscribes[currentSlide].id) : [],
+  );
 
   const { height, width } = useWindowDimensions();
 
@@ -33,12 +40,12 @@ const MySubscriptions: NextPage = () => {
 
   const [currentTranslate, setCurrentTranslate] = useState<number>(0);
   const [slideWidth, setSlideWidth] = useState<number>(620);
+
   useEffect(() => {
     setCurrentTranslate(-1 * currentSlide * (slideWidth + 28));
   }, [currentSlide]);
 
   useEffect(() => {
-    dispatch(getSubscribes());
     setSlideWidth((width * 0.82) / 2 + 14);
   }, []);
 
@@ -58,17 +65,18 @@ const MySubscriptions: NextPage = () => {
       </Container>
       <LicenseSlider>
         <SliderWrapper $translate={currentTranslate}>
-          {subscribes.map((subscribe: any, index) => (
-            <SliderItem $width={slideWidth} key={subscribe.id}>
-              <LicenseCard
-                name={subscribe.product.name}
-                currentPeriodEnd={formatPeriodEnd(subscribe.currentPeriodEnd)}
-                status={subscribe.status}
-                disabled={currentSlide !== index}
-                price={subscribe.product.prices[0].price}
-              />
-            </SliderItem>
-          ))}
+          {subscribes &&
+            subscribes.map((subscribe: any, index) => (
+              <SliderItem $width={slideWidth} key={subscribe.id}>
+                <LicenseCard
+                  name={subscribe.product.name}
+                  currentPeriodEnd={formatPeriodEnd(subscribe.currentPeriodEnd)}
+                  status={subscribe.status}
+                  disabled={currentSlide !== index}
+                  price={subscribe.product.prices[0].price}
+                />
+              </SliderItem>
+            ))}
         </SliderWrapper>
       </LicenseSlider>
       <Container>
@@ -78,17 +86,21 @@ const MySubscriptions: NextPage = () => {
           </NavButtonLeft>
           <SlidesQuantity>
             <CurrentSlide>{currentSlide + 1}/</CurrentSlide>
-            {subscribes.length}
+            {subscribes && subscribes.length}
           </SlidesQuantity>
           <NavButtonRight $inactive={currentSlide >= subscribes.length - 1} onClick={nextSlide}>
             <ArrowRight />
           </NavButtonRight>
         </SliderNavigation>
         <CodesWrapper>
-          {subscribes[currentSlide] &&
-            subscribes[currentSlide].codes.map((code) => (
-              <CodeAccordion status={code.status} code={code.code} key={code.id} />
-            ))}
+          {codes.map((code) => (
+            <CodeAccordion
+              status={code.status}
+              code={code.code}
+              origin={code.origin === null ? '' : code.origin}
+              key={code.id}
+            />
+          ))}
         </CodesWrapper>
       </Container>
     </div>
@@ -97,9 +109,11 @@ const MySubscriptions: NextPage = () => {
 
 export default withAuth(MySubscriptions);
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, res }) => {
+  const token = await cookies.getItem(CookiesKeys.token, { req, res });
   try {
-    await store.dispatch(getSubscribes());
+    await store.dispatch(getSubscribes({ headers: { Authorization: `Bearer ${token}` } }));
+    await store.dispatch(getCodes({ headers: { Authorization: `Bearer ${token}` } }));
   } catch (e) {
     console.log(e);
   }

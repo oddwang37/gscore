@@ -24,9 +24,9 @@ const Header = () => {
 
   const username = useSelector(authSelectors.username);
 
-  useEffect(() => {
+/*   useEffect(() => {
     dispatch(getMe());
-  });
+  }); */
   return (
     <Root>
       <Container>
