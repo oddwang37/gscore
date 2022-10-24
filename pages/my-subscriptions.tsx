@@ -60,7 +60,10 @@ const MySubscriptions: NextPage = () => {
       <Container>
         <HeadingWrapper>
           <Heading>My Subscriptions</Heading>
-          <PrimaryButton>Upgrade</PrimaryButton>
+          <MobileButton>Upgrade</MobileButton>
+          <ButtonWrapper>
+            <PrimaryButton>Upgrade</PrimaryButton>
+          </ButtonWrapper>
         </HeadingWrapper>
       </Container>
       <LicenseSlider>
@@ -131,11 +134,41 @@ type NavButtonProps = {
 };
 const Heading = styled.h1`
   ${({ theme: { typography } }) => typography.title54};
+  @media (max-width: 992px) {
+    ${({ theme: { typography } }) => typography.title44};
+  }
+  @media (max-width: 768px) {
+    font-size: 38px;
+  }
+  @media (max-width: 576px) {
+    ${({ theme: { typography } }) => typography.title28};
+  }
 `;
 const HeadingWrapper = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 48px;
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
+  @media (max-width: 576px) {
+    margin-bottom: 10px;
+  }
+`;
+const MobileButton = styled.div`
+  display: none;
+  font-size: 24px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.primaryColor};
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+const ButtonWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 const LicenseSlider = styled.div`
   margin-top: 48px;

@@ -24,9 +24,9 @@ const Header = () => {
 
   const username = useSelector(authSelectors.username);
 
-/*   useEffect(() => {
+  useEffect(() => {
     dispatch(getMe());
-  }); */
+  }); 
   return (
     <Root>
       <Container>
@@ -80,6 +80,7 @@ const Root = styled.div`
   @media (max-width: 576px) {
     margin-top: 20px;
     padding: 0;
+    height: 40px;
     position: static;
   }
 `;

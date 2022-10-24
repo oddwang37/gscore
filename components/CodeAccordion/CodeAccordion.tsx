@@ -80,7 +80,7 @@ const Grid = styled.div<GridProps>`
   display: grid;
   grid-template-columns: ${({ $status }) =>
     $status === 'INACTIVE' ? '0.5fr 3fr 4fr 1fr 1fr' : '0.5fr 3fr 6fr 1fr'};
-  grid-template-rows: ${({ $isOpened }) => ($isOpened ? '28px 1fr' : '1fr')};
+  grid-template-rows: ${({ $isOpened }) => ($isOpened ? '14px 1fr' : '1fr')};
   flex-wrap: nowrap;
   column-gap: 20px;
   row-gap: 10px;
@@ -91,7 +91,8 @@ const Heading = styled.div`
   color: #969696;
   font-weight: 700;
   font-size: 16px;
-  line-height: 40px;
+  align-self: end;
+  margin-top: 10px;
 `;
 const Button = styled(SecondaryButton)`
   padding: 20px;
