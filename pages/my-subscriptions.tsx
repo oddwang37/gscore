@@ -46,7 +46,11 @@ const MySubscriptions: NextPage = () => {
   }, [currentSlide]);
 
   useEffect(() => {
-    setSlideWidth((width * 0.82) / 2 + 14);
+    if (width < 768) {
+      setSlideWidth(width * 0.82 + 14);
+    } else {
+      setSlideWidth((width * 0.82) / 2 + 14);
+    }
   }, []);
 
   const formatPeriodEnd = (seconds: string) => {

@@ -44,6 +44,20 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
         )}
         <Status $status={status}>{status.toLowerCase()}</Status>
       </Grid>
+      <MobileWrapper>
+        <MobileHeader>  
+        <Checkbox />
+        <Status $status={status}>{status.toLowerCase()}</Status>
+        </MobileHeader>
+        <MobileElement>
+          <Heading>License code</Heading>
+          <CodeInput copyable value={code} />
+        </MobileElement>
+        <MobileElement>
+          <Heading>Domain</Heading>
+          <CodeInput value={origin} />
+        </MobileElement>
+      </MobileWrapper> 
     </Root>
   );
 };
@@ -75,6 +89,9 @@ const Root = styled.div<RootProps>`
   background-color: #272727;
   border-radius: 12px;
   cursor: pointer;
+  @media (max-width: 576px) {
+    padding: 0;
+  }
 `;
 const Grid = styled.div<GridProps>`
   display: grid;
@@ -86,12 +103,31 @@ const Grid = styled.div<GridProps>`
   row-gap: 10px;
   grid-template-rows: 2fr;
   align-items: center;
+  @media (max-width: 576px) {
+    display: none;
+  }
 `;
+const MobileWrapper = styled.div`
+  display: none;
+  padding: 32px 20px;
+  @media (max-width: 576px) {
+    display: block;
+  }
+`
+const MobileHeader = styled.div`
+  display: flex;
+  gap: 20px;
+`
+const MobileElement = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+`
 const Heading = styled.div`
   color: #969696;
   font-weight: 700;
   font-size: 16px;
-  align-self: end;
   margin-top: 10px;
 `;
 const Button = styled(SecondaryButton)`
@@ -104,7 +140,6 @@ const Button = styled(SecondaryButton)`
 const Status = styled.div<StatusProps>`
   ${({ theme: { typography } }) => typography.title22};
   text-transform: capitalize;
-  justify-self: end;
   color: ${({ $status, theme: { colors } }) => {
     switch ($status) {
       case 'ACTIVE':
