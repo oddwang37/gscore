@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 import { Copy } from 'components/svg';
 
-const CodeInput: FC<CodeInputProps> = ({ copyable, code }) => {
+const CodeInput: FC<CodeInputProps> = ({ copyable, value }) => {
   return (
     <Root>
-      <Field $copyable={copyable} readOnly defaultValue={code}/>
+      <Field $copyable={copyable} readOnly defaultValue={value} />
       {copyable && (
         <IconWrapper>
           <Copy />
@@ -20,7 +20,7 @@ export default CodeInput;
 
 type CodeInputProps = {
   copyable?: boolean;
-  code: string;
+  value: string;
 };
 
 type FieldProps = {
@@ -36,6 +36,9 @@ const IconWrapper = styled.div`
   top: 53%;
   transform: translateY(-50%);
   cursor: pointer;
+  & path {
+    fill: #393939;
+  }
   &:hover path {
     stroke: #c7c7c7;
   }
@@ -52,7 +55,7 @@ const Field = styled.input<FieldProps>`
   padding-right: ${({ $copyable }) => ($copyable ? '30%' : '0')};
   margin-bottom: 0;
   padding: 25px 23px;
-  color: #393939;
+  font-family: inherit;
   &:focus {
     outline: 1px solid #000;
   }

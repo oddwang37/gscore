@@ -36,6 +36,15 @@ const Text = styled.div`
   margin-top: 24px;
   margin-bottom: 60px;
   width: 25%;
+  @media (max-width: 992px) {
+    width: 50%;
+  }
+  @media (max-width: 768px) {
+    width: 65%;
+  }
+  @media (max-width: 576px) {
+    width: 100%;
+  }
 `;
 const LogoWrapper = styled.div`
   @media (max-width: 576px) {
@@ -47,11 +56,23 @@ const Contacts = styled.div`
   padding: 44px 0;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 768px) {
+    display: block;
+  }
 `;
 const CopyrightText = styled.div`
-  ${({ theme: { typography } }) => typography.textMedium18}
+  ${({ theme: { typography } }) => typography.textMedium18};
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 const Socials = styled.div`
   display: flex;
+  align-items: center;
   gap: 30px;
+  @media (max-width: 768px) {
+    margin: 0 auto;
+    width: 30vw;
+    margin-top: 30px;
+  }
 `;

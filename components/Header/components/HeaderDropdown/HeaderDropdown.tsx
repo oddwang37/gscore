@@ -53,7 +53,7 @@ const Root = styled.div<RootProps>`
   position: absolute;
   bottom: -50px;
   right: 0;
-  width: 15%;
+  width: 20vw;
   padding: 28px 24px;
   background-color: #272727;
   display: flex;

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
+import _ from 'lodash';
 
 import http from 'services/http';
 
@@ -26,13 +27,16 @@ export const buySubscribe = createAsyncThunk(
   },
 );
 
-export const getSubscribes = createAsyncThunk('subscribes/get', async (_, { rejectWithValue }) => {
-  try {
-    const result = await http.get(API.getSubscribes);
-    return result.data;
-  } catch (err: any) {
-    if (axios.isAxiosError(err) && err.response) {
-      return rejectWithValue(err.response.data);
+export const getSubscribes = createAsyncThunk(
+  'subscribes/get',
+  async (requestConfig: AxiosRequestConfig = {}, { rejectWithValue }) => {
+    try {
+      const result = await http.get(API.getSubscribes, requestConfig);
+      return result.data;
+    } catch (err: any) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data);
+      }
     }
-  }
-});
+  },
+);

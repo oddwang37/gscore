@@ -90,10 +90,10 @@ type RootProps = {
 const Root = styled.div<RootProps>`
   position: fixed;
   top: 0;
-  right: 0;
+  right: ${({ $isOpened }) => ($isOpened ? '0' : '-100%')};
   width: 70vw;
   height: 100vh;
-  display: ${({ $isOpened }) => ($isOpened ? 'block' : 'none')};
+  transition: 0.5s all;
   background-color: #272727;
   padding: 28px 24px 0 24px;
   z-index: 5;

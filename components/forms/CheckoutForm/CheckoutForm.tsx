@@ -35,7 +35,7 @@ const CheckoutForm = () => {
   const onPurchase = () => {
     if (subInfo) {
       dispatch(buySubscribe({ priceId: subInfo.id }));
-      router.push('/my-subscriptions');
+      router.push('/start-subscription');
     }
   };
 

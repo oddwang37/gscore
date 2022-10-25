@@ -67,6 +67,9 @@ const StyledCheckbox = styled.div<StyledCheckboxProps>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  & path {
+    stroke: #fff;
+  }
   &:hover {
     background-color: ${(p) => (p.checked ? '#DC2B2B' : '#C7C7C7')};
   }
