@@ -12,13 +12,19 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
   const isLoading = useSelector((state: RootState) => state.codes.isLoading);
   const dispatch = useAppDispatch();
   const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const switchOpened = () => {
     setIsOpened((prev) => !prev);
   };
 
-  const onActivateClick = () => {
-    dispatch(activateCode({ code }));
+  const onActivateClick = async () => {
+    try {
+      await dispatch(activateCode({ code })).unwrap();
+      setErrorMessage('');
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
   };
 
   return (
@@ -64,7 +70,10 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
           <Heading>Domain</Heading>
           <CodeInput value={origin} />
         </MobileElement>
-      </MobileWrapper> 
+      </MobileWrapper>
+      <ErrorMessage>
+            {errorMessage}
+      </ErrorMessage>
     </Root>
   );
 };
@@ -163,3 +172,9 @@ const Status = styled.div<StatusProps>`
     }
   }};
 `;
+const ErrorMessage = styled.div`
+  font-size: 14px;
+  color: ${({theme}) => theme.colors.red400};
+  text-align: right;
+  margin-top: 12px;
+`
