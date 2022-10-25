@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import styled from 'styled-components';
 import { useAppDispatch } from 'state/store';
 
-import { Steps, CreateAccountForm, LogInForm, CheckoutForm } from 'components';
+import { Steps, CreateAccountForm, LogInForm, CheckoutForm, Container } from 'components';
 
 const CreateAccount: NextPage = () => {
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
@@ -18,13 +18,15 @@ const CreateAccount: NextPage = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <Wrapper>
-      <Steps
-        contentArray={contentArray}
-        stepHeaders={stepHeaders}
-        activeStepIndex={activeStepIndex}
-      />
-    </Wrapper>
+    <Container>
+      <Wrapper>
+        <Steps
+          contentArray={contentArray}
+          stepHeaders={stepHeaders}
+          activeStepIndex={activeStepIndex}
+        />
+      </Wrapper>
+    </Container>
   );
 };
 

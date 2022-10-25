@@ -32,7 +32,6 @@ export const errorMiddleware: Middleware =
   (api: MiddlewareAPI) =>
   (next: Dispatch) =>
   (action: any): AnyAction => {
-    console.log('middlewrae');
     if (isRejectedWithValue(action)) {
       if (action.payload.status === 401) {
         api.dispatch(logout());

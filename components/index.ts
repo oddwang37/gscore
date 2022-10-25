@@ -18,6 +18,7 @@ export { Header } from './Header';
 export { CodeAccordion } from './CodeAccordion';
 export { PricingCard } from './PricingCard';
 export { Footer } from './Footer';
+export { NoSubsPlaceholder } from './NoSubsPlaceholder';
 export {
   CreateAccountForm,
   LogInForm,

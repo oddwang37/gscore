@@ -26,7 +26,7 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(getMe());
-  });
+  }); 
   return (
     <Root>
       <Container>
@@ -77,9 +77,10 @@ const Root = styled.div`
   padding: 32px 0;
   margin-bottom: 32px;
   position: relative;
-  @media (max-width: 576px) {
+  @media (max-width: 768px) {
     margin-top: 20px;
     padding: 0;
+    height: 40px;
     position: static;
   }
 `;
@@ -97,7 +98,7 @@ const FlexWrapper = styled.div`
   display: flex;
   gap: 32px;
   align-items: center;
-  @media (max-width: 576px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -108,7 +109,7 @@ const Username = styled.div`
   align-items: center;
 `;
 const LogoWrapper = styled.div`
-  @media (max-width: 576px) {
+  @media (max-width: 768px) {
     transform: scale(0.8) translateX(-12%);
   }
 `;
@@ -130,7 +131,7 @@ const IconWrapper = styled.div`
 `;
 const BurgerMenu = styled.div`
   display: none;
-  @media (max-width: 576px) {
+  @media (max-width: 768px) {
     display: block;
   }
 `;
