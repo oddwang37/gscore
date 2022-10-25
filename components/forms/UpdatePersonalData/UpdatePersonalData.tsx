@@ -1,11 +1,9 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { useForm, FieldValues } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 
-import { useAppDispatch } from 'state/store';
-import { authThunks } from 'state/ducks/auth';
-import { authSelectors } from 'state/ducks/auth';
+import patterns from 'constants/validation';
+import { useEditUser } from 'hooks/useEditUser';
 
 import { PrimaryButton } from 'components';
 import { InputFormField } from '../components/InputFormField';
@@ -15,8 +13,6 @@ interface FormValues extends FieldValues {
   email: string;
 }
 const UpdatePersonalData: FC<UpdatePersonalProps> = () => {
-  const currentEmail = useSelector(authSelectors.email);
-  const currentUsername = useSelector(authSelectors.username);
   const {
     control,
     handleSubmit,
@@ -30,31 +26,12 @@ const UpdatePersonalData: FC<UpdatePersonalProps> = () => {
       email: '',
     },
   });
-  const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-  const isLoading = useSelector(authSelectors.isLoading);
 
-  const onSubmit = (data: FormValues) => {
-    const username = data.username || currentUsername;
-    const email = data.email || currentEmail;
-    dispatch(authThunks.updatePersonalData({ username, email }))
-      .unwrap()
-      .then(() => {
-        reset();
-        setIsSuccessfullySubmitted(true);
-      })
-      .catch(({ statusCode }) => {
-        switch (statusCode) {
-          case 409:
-            setError('email', { type: 'server', message: 'User with this email already exists' });
-        }
-        setIsSuccessfullySubmitted(false);
-      });
-  };
-
-  if (isDirty && isSuccessfullySubmitted) {
-    setIsSuccessfullySubmitted(false);
-  }
+  const { onSubmit, isLoading, isSuccessfullySubmitted } = useEditUser(
+    reset,
+    setError,
+    isDirty,
+  );
 
   return (
     <Root>
@@ -75,8 +52,7 @@ const UpdatePersonalData: FC<UpdatePersonalProps> = () => {
             placeholder="Email"
             rules={{
               pattern: {
-                value:
-                  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+                value: patterns.email,
                 message: 'Email must be valid',
               },
             }}

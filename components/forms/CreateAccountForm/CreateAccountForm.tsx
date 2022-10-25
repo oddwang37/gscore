@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useForm, FieldValues } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
+import patterns from 'constants/validation';
 import cookies, { CookiesKeys } from 'services/cookies';
 import { useAppDispatch } from 'state/store';
 import { authThunks } from 'state/ducks/auth';
@@ -40,16 +41,16 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
     }
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     const { username, email, password } = data;
-    dispatch(authThunks.registerUser({ username, email, password }))
-      .unwrap()
-      .then(() => nextStep())
-      .catch((e) => {
-        if (e.statusCode === 409) {
-          setError('email', { type: 'server', message: 'User with this email already exists' });
-        }
-      });
+    try {
+      await dispatch(authThunks.registerUser({ username, email, password })).unwrap();
+      nextStep();
+    } catch ({ statusCode }) {
+      if (statusCode === 409) {
+        setError('email', { type: 'server', message: 'User with this email already exists' });
+      }
+    }
   };
   return (
     <Root>
@@ -72,8 +73,7 @@ const CreateAccountForm: FC<CreateAccountProps> = ({ nextStep }) => {
             rules={{
               required: { value: true, message: 'This field is required' },
               pattern: {
-                value:
-                  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+                value: patterns.email,
                 message: 'Email must be valid',
               },
             }}

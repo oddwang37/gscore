@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import { useAppDispatch } from 'state/store';
+import { useAppDispatch, RootState } from 'state/store';
 import { activateCode } from 'state/ducks/codes/thunks';
 import { Checkbox } from 'components';
 import SecondaryButton from 'components/UI/buttons/SecondaryButton/SecondaryButton';

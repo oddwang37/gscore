@@ -74,4 +74,6 @@ const ContactUsLink = styled.a`
   text-decoration: underline;
   margin-bottom: 42px;
   display: block;
+  cursor: pointer;
+  margin-top: 10px;
 `;

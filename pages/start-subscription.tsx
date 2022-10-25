@@ -1,34 +1,34 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import { NextPage } from 'next';
 import Link from 'next/link';
 import _ from 'lodash';
+import { useSelector } from 'react-redux';
 
-import { buySubscribe, getSubscribes } from 'state/ducks/subscribes/thunks';
-import { useAppDispatch } from 'state/store';
-import { Product } from 'state/ducks/products/types';
 import { productsSelectors } from 'state/ducks/products';
 import PrimaryButton from 'components/UI/buttons/PrimaryButton/PrimaryButton';
 import { Delete } from 'components/svg';
 import { Container } from 'components';
 
 const StartSub: NextPage = () => {
+  const productInfo = useSelector(productsSelectors.selectedProduct);
 
   return (
     <Container>
       <Root>
         <Title>Start your subscription</Title>
-        <Text>We have sent you a payment receipt by e-mail and a link to download the plugin with a license key.</Text>
+        <Text>
+          We have sent you a payment receipt by e-mail and a link to download the plugin with a
+          license key.
+        </Text>
         <ListWrapper>
           <Header>
             <div>Package name</div>
             <div>Price</div>
           </Header>
           <ListItem>
-            <div>Some name</div>
+            <div>{productInfo?.name}</div>
             <Wrapper>
-              <div>$55</div>
+              <div>${productInfo?.prices[0].price}</div>
               <Delete />
             </Wrapper>
           </ListItem>
@@ -62,7 +62,7 @@ const Text = styled.div`
   font-size: 14px;
   font-weight: 500;
   margin-top: 16px;
-`
+`;
 const ListWrapper = styled.div`
   background-color: #272727;
   font-size: 24px;
@@ -89,11 +89,10 @@ const Button = styled(PrimaryButton)`
   width: 100%;
   padding: 26px 0;
   height: 72px;
-`
+`;
 const Header = styled.div`
   font-weight: 700;
   padding: 48px 72px 32px 32px;
   display: flex;
   justify-content: space-between;
-
 `;

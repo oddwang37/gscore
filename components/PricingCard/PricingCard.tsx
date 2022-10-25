@@ -2,13 +2,18 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
+import { useAppDispatch } from 'state/store';
+import { setSelectedId } from 'state/ducks/products/slices';
 import { Check } from 'components/svg';
 
 const PricingCard: FC<PricingCardProps> = ({ name, price, sitesQuantity, isMainColor, id }) => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const toCheckout = () =>
-    router.push({ pathname: '/create-account', query: { priceId: id.toString() } });
+  const toCheckout = () => {
+    dispatch(setSelectedId(id));
+    router.push('/create-account');
+  };
 
   return (
     <Root $isMainColor={isMainColor}>

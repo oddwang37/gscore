@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useForm, FieldValues } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
+import patterns from 'constants/validation';
 import cookies, { CookiesKeys } from 'services/cookies';
 import { useAppDispatch } from 'state/store';
 import { authThunks } from 'state/ducks/auth';
@@ -38,25 +39,23 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
     }
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     const { email, password } = data;
-    dispatch(authThunks.loginUser({ email, password }))
-      .unwrap()
-      .then(() => {
-        nextStep();
-      })
-      .catch(({ statusCode }) => {
-        switch (statusCode) {
-          case 400: {
-            setError('password', { type: 'server', message: 'Incorrect password' });
-            break;
-          }
-          case 404: {
-            setError('email', { type: 'server', message: 'User with this email is not found' });
-            break;
-          }
+    try {
+      await dispatch(authThunks.loginUser({ email, password })).unwrap();
+      nextStep();
+    } catch ({ statusCode }) {
+      switch (statusCode) {
+        case 400: {
+          setError('password', { type: 'server', message: 'Incorrect password' });
+          break;
         }
-      });
+        case 404: {
+          setError('email', { type: 'server', message: 'User with this email is not found' });
+          break;
+        }
+      }
+    }
   };
 
   return (
@@ -71,8 +70,7 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
             rules={{
               required: { value: true, message: 'This field is required' },
               pattern: {
-                value:
-                  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+                value: patterns.email,
                 message: 'Email must be valid',
               },
             }}

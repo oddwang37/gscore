@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { withAuth } from 'hocs/withAuth';
 
-import { UpdatePersonalData, ChangePasswordForm, Tabs } from 'components';
+import { UpdatePersonalData, ChangePasswordForm, Tabs, Container } from 'components';
 
 const Settings: NextPage = () => {
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
@@ -17,17 +17,15 @@ const Settings: NextPage = () => {
   const contentArray = [<UpdatePersonalData key="0" />, <ChangePasswordForm key="1" />];
 
   return (
-    <Tabs
-      activeTabIndex={activeTabIndex}
-      changeActiveTabIndex={changeActiveTabIndex}
-      tabHeaders={tabHeaders}
-      contentArray={contentArray}
-    />
+    <Container>
+      <Tabs
+        activeTabIndex={activeTabIndex}
+        changeActiveTabIndex={changeActiveTabIndex}
+        tabHeaders={tabHeaders}
+        contentArray={contentArray}
+      />
+    </Container>
   );
 };
 
 export default withAuth(Settings);
-
-const Container = styled.div`
-  margin: 0 6%;
-`;

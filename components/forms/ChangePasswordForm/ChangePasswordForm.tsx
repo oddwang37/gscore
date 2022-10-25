@@ -1,10 +1,10 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm, FieldValues } from 'react-hook-form';
 
+import { useChangePassword } from 'hooks/useChangePassword';
 import { useAppDispatch } from 'state/store';
 import { authSelectors, authThunks } from 'state/ducks/auth';
-
 import { InputFormField } from '../components/InputFormField';
 import { PrimaryButton } from 'components';
 import { useSelector } from 'react-redux';
@@ -28,38 +28,12 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = () => {
       newPassword: '',
     },
   });
-  const dispatch = useAppDispatch();
-  const userEmail = useSelector(authSelectors.email);
-  const isLoading = useSelector(authSelectors.isLoading);
+  const { onSubmit, isLoading, isSuccessfullySubmitted } = useChangePassword(
+    reset,
+    setError,
+    isDirty,
+  );
 
-  const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState<boolean>(false);
-
-  const onSubmit = (data: FormValues) => {
-    const { currentPassword, newPassword } = data;
-    dispatch(authThunks.loginUser({ email: userEmail, password: currentPassword }))
-      .unwrap()
-      .then(() => {
-        dispatch(authThunks.updatePassword({ currentPassword, newPassword }))
-          .unwrap()
-          .then(() => {
-            reset();
-            setIsSuccessfullySubmitted(true);
-          });
-      })
-      .catch(({ statusCode }) => {
-        switch (statusCode) {
-          case 400: {
-            setError('currentPassword', { type: 'server', message: 'Incorrect password' });
-            setIsSuccessfullySubmitted(false);
-            break;
-          }
-        }
-      });
-  };
-
-  if (isDirty && isSuccessfullySubmitted) {
-    setIsSuccessfullySubmitted(false);
-  }
   return (
     <Root>
       <Title>Change password</Title>

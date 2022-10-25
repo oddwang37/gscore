@@ -1,16 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-
 
 import { Close } from 'components/svg';
 import { Container, PrimaryButton } from 'components';
 
-
 const NoSubsPlaceholder = () => {
-  
   return (
     <Container>
       <Root>
@@ -18,10 +13,7 @@ const NoSubsPlaceholder = () => {
           <Close />
         </Circle>
         <Title>No active subscriptions</Title>
-        <Text>
-        You can subscribe right now by 
-        clicking on the button below
-        </Text>
+        <Text>You can subscribe right now by clicking on the button below</Text>
         <Link href="/">
           <PrimaryButton>Get Gscore</PrimaryButton>
         </Link>
@@ -33,6 +25,8 @@ const NoSubsPlaceholder = () => {
 export default NoSubsPlaceholder;
 
 const Root = styled.div`
+  padding-top: 10vh;
+  padding-bottom: 15vh;
   width: 30vw;
   margin: 0 auto;
   display: flex;
@@ -47,15 +41,15 @@ const Circle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const Title = styled.div`
-  ${({theme}) => theme.typography.title28};
+  ${({ theme }) => theme.typography.title28};
   text-align: center;
   margin-top: 24px;
-`
+`;
 const Text = styled.div`
   font-size: 18px;
   margin-top: 8px;
   text-align: center;
   margin-bottom: 32px;
-`
+`;

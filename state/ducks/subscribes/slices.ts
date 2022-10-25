@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { buySubscribe, getSubscribes } from './thunks';
-import { Subscribes } from './types';
+import { Subscribes, Subscribe } from './types';
 
 interface SubscribesState {
   subscribes: Subscribes;

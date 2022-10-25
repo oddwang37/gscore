@@ -23,10 +23,9 @@ const Header = () => {
   const closeMenu = () => setIsMenuOpened(false);
 
   const username = useSelector(authSelectors.username);
-
   useEffect(() => {
     dispatch(getMe());
-  }); 
+  }, []);
   return (
     <Root>
       <Container>

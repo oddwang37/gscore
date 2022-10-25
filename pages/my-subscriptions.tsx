@@ -5,9 +5,8 @@ import { useSelector } from 'react-redux';
 import { intervalToDuration, add, format } from 'date-fns';
 
 import { RootState } from 'state/store';
-import { Subscribes } from 'state/ducks/subscribes/types';
 import { withAuth } from 'hocs/withAuth';
-import { useWindowDimensions } from 'hooks/getWindowDimensions';
+import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import { wrapper, useAppDispatch } from 'state/store';
 import { getCodes } from 'state/ducks/codes/thunks';
 import { getSubscribes } from 'state/ducks/subscribes/thunks';
@@ -15,7 +14,13 @@ import { subscribesSelectors } from 'state/ducks/subscribes';
 import { codesSelectors } from 'state/ducks/codes';
 import cookies, { CookiesKeys } from 'services/cookies';
 
-import { LicenseCard, CodeAccordion, PrimaryButton, Container, NoSubsPlaceholder } from 'components';
+import {
+  LicenseCard,
+  CodeAccordion,
+  PrimaryButton,
+  Container,
+  NoSubsPlaceholder,
+} from 'components';
 import { ArrowLeft, ArrowRight } from 'components/svg';
 
 const MySubscriptions: NextPage = () => {
@@ -66,7 +71,7 @@ const MySubscriptions: NextPage = () => {
           <Heading>My Subscriptions</Heading>
           <MobileButton>Upgrade</MobileButton>
           <ButtonWrapper>
-            {subscribes.length !== 0 &&<PrimaryButton>Upgrade</PrimaryButton>}
+            {subscribes.length !== 0 && <PrimaryButton>Upgrade</PrimaryButton>}
           </ButtonWrapper>
         </HeadingWrapper>
       </Container>
@@ -88,18 +93,19 @@ const MySubscriptions: NextPage = () => {
       </LicenseSlider>
       {subscribes.length === 0 && <NoSubsPlaceholder />}
       <Container>
-        {subscribes.length !== 0 && (<SliderNavigation>
-          <NavButtonLeft $inactive={currentSlide === 0} onClick={prevSlide}>
-            <ArrowLeft />
-          </NavButtonLeft>
-          <SlidesQuantity>
-            <CurrentSlide>{currentSlide + 1}/</CurrentSlide>
-            {subscribes && subscribes.length}
-          </SlidesQuantity>
-          <NavButtonRight $inactive={currentSlide >= subscribes.length - 1} onClick={nextSlide}>
-            <ArrowRight />
-          </NavButtonRight>
-        </SliderNavigation>
+        {subscribes.length !== 0 && (
+          <SliderNavigation>
+            <NavButtonLeft $inactive={currentSlide === 0} onClick={prevSlide}>
+              <ArrowLeft />
+            </NavButtonLeft>
+            <SlidesQuantity>
+              <CurrentSlide>{currentSlide + 1}/</CurrentSlide>
+              {subscribes && subscribes.length}
+            </SlidesQuantity>
+            <NavButtonRight $inactive={currentSlide >= subscribes.length - 1} onClick={nextSlide}>
+              <ArrowRight />
+            </NavButtonRight>
+          </SliderNavigation>
         )}
         <CodesWrapper>
           {codes.map((code) => (
