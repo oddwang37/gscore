@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { buySubscribe, getSubscribes } from './thunks';
+import { buySubscribe, getSubscribes, changeSubscribe } from './thunks';
 import { Subscribes, Subscribe } from './types';
 
 interface SubscribesState {
@@ -18,6 +18,9 @@ const subscribesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getSubscribes.fulfilled, (state, action) => {
       state.subscribes = action.payload;
+    });
+    builder.addCase(changeSubscribe.fulfilled, (state, action) => {
+      console.log(action.payload);
     });
   },
 });

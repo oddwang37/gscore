@@ -3,18 +3,16 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
 import { useAppDispatch } from 'state/store';
-import { setSelectedId } from 'state/ducks/products/slices';
 import { Check } from 'components/svg';
 
-const PricingCard: FC<PricingCardProps> = ({ name, price, sitesQuantity, isMainColor, id }) => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  const toCheckout = () => {
-    dispatch(setSelectedId(id));
-    router.push('/create-account');
-  };
-
+const PricingCard: FC<PricingCardProps> = ({
+  name,
+  price,
+  sitesQuantity,
+  isMainColor,
+  id,
+  onButtonClick,
+}) => {
   return (
     <Root $isMainColor={isMainColor}>
       <Price>${price}</Price>
@@ -56,7 +54,7 @@ const PricingCard: FC<PricingCardProps> = ({ name, price, sitesQuantity, isMainC
           <ListItemText>Billed annually</ListItemText>
         </ListItem>
       </List>
-      <Button onClick={toCheckout} $isMainColor={isMainColor}>
+      <Button onClick={() => onButtonClick(id)} $isMainColor={isMainColor}>
         Get Gscore
       </Button>
     </Root>
@@ -71,6 +69,7 @@ type PricingCardProps = {
   sitesQuantity: number;
   isMainColor?: boolean;
   id: number;
+  onButtonClick: (id: number) => void;
 };
 
 type IsMainColorProp = {

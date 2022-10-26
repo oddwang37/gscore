@@ -2,10 +2,12 @@ import { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm, FieldValues } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import patterns from 'constants/validation';
 import cookies, { CookiesKeys } from 'services/cookies';
 import { useAppDispatch } from 'state/store';
+import { productsSelectors } from 'state/ducks/products';
 import { authThunks } from 'state/ducks/auth';
 import { authSelectors } from 'state/ducks/auth';
 import { PrimaryButton } from 'components';
@@ -17,6 +19,7 @@ interface FormValues extends FieldValues {
 }
 
 const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
+  const productId = useSelector(productsSelectors.selectedProductId);
   const {
     control,
     handleSubmit,
@@ -31,11 +34,16 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
   });
   const dispatch = useAppDispatch();
   const isLoading = useSelector(authSelectors.isLoading);
+  const router = useRouter();
 
   useEffect(() => {
     const token = cookies.getItem(CookiesKeys.token);
     if (token) {
-      nextStep();
+      if (productId) {
+        nextStep();
+      } else {
+        router.push('/my-subscriptions');
+      }
     }
   });
 

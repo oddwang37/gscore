@@ -22,7 +22,7 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
     try {
       await dispatch(activateCode({ code })).unwrap();
       setErrorMessage('');
-    } catch (e) {
+    } catch (e: any) {
       setErrorMessage(e.message);
     }
   };
@@ -51,16 +51,16 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
         <Status $status={status}>{status.toLowerCase()}</Status>
       </Grid>
       <MobileWrapper>
-        <MobileHeader>  
+        <MobileHeader>
           <StatusWrapper>
             <Checkbox />
             <Status $status={status}>{status.toLowerCase()}</Status>
           </StatusWrapper>
           {status === 'INACTIVE' && (
-          <Button isLoading={isLoading} onClick={onActivateClick}>
-            Activate
-          </Button>
-        )}
+            <Button isLoading={isLoading} onClick={onActivateClick}>
+              Activate
+            </Button>
+          )}
         </MobileHeader>
         <MobileElement>
           <Heading>License code</Heading>
@@ -71,9 +71,7 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
           <CodeInput value={origin} />
         </MobileElement>
       </MobileWrapper>
-      <ErrorMessage>
-            {errorMessage}
-      </ErrorMessage>
+      <ErrorMessage>{errorMessage}</ErrorMessage>
     </Root>
   );
 };
@@ -129,22 +127,22 @@ const MobileWrapper = styled.div`
   @media (max-width: 576px) {
     display: block;
   }
-`
+`;
 const MobileHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 const StatusWrapper = styled.div`
   display: flex;
   gap: 20px;
-`
+`;
 const MobileElement = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-top: 24px;
-`
+`;
 const Heading = styled.div`
   color: #969696;
   font-weight: 700;
@@ -174,7 +172,7 @@ const Status = styled.div<StatusProps>`
 `;
 const ErrorMessage = styled.div`
   font-size: 14px;
-  color: ${({theme}) => theme.colors.red400};
+  color: ${({ theme }) => theme.colors.red400};
   text-align: right;
   margin-top: 12px;
-`
+`;

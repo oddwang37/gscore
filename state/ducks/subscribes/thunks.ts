@@ -8,9 +8,15 @@ type ProductInfo = {
   priceId: number;
 };
 
+type ChangeSubscribeReq = {
+  productId: number;
+  subscribeId: number;
+}
+
 const API = {
   buySubscribe: 'payments/buy',
   getSubscribes: 'subscribe/self',
+  changeSubscribe: 'subscribe/change-product',
 };
 
 export const buySubscribe = createAsyncThunk(
@@ -32,6 +38,20 @@ export const getSubscribes = createAsyncThunk(
   async (requestConfig: AxiosRequestConfig = {}, { rejectWithValue }) => {
     try {
       const result = await http.get(API.getSubscribes, requestConfig);
+      return result.data;
+    } catch (err: any) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data);
+      }
+    }
+  },
+);
+
+export const changeSubscribe = createAsyncThunk(
+  'subscribes/change',
+  async (changeSubReq: ChangeSubscribeReq, { rejectWithValue }) => {
+    try {
+      const result = await http.post(API.changeSubscribe, changeSubReq);
       return result.data;
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
