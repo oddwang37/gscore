@@ -7,7 +7,6 @@ import { Products} from 'state/ducks/products/types';
 import { GetStarted } from 'page-components';
 
 const GetStartedPage: NextPage<GetStartedProps> = () => {
-
   return (
     <GetStarted />
   );

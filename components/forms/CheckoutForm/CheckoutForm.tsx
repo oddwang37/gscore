@@ -16,11 +16,6 @@ const CheckoutForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (!productId) {
-      router.push('/');
-    }
-  }, []);
   const onPurchase = () => {
     if (productInfo) {
       dispatch(buySubscribe({ priceId: productInfo.id }));

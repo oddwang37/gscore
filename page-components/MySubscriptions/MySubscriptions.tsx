@@ -1,30 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { intervalToDuration, add, format } from 'date-fns';
+import { useRouter } from 'next/router';
+import _ from 'lodash';
 
-import { RootState } from 'state/store';
+import { RootState, useAppDispatch } from 'state/store';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
+import { manageCodes } from 'state/ducks/codes/thunks';
 import { subscribesSelectors } from 'state/ducks/subscribes';
 import { codesSelectors } from 'state/ducks/codes';
-
-import {
-  LicenseCard,
-  CodeAccordion,
-  PrimaryButton,
-  Container,
-  NoSubsPlaceholder,
-} from 'components';
+import { clearSelectedCodes } from 'state/ducks/codes';
+import { LicenseCard, CodeAccordion, Container, NoSubsPlaceholder } from 'components';
+import PrimaryButton from 'components/UI/buttons/PrimaryButton/PrimaryButton';
 import { ArrowLeft, ArrowRight } from 'components/svg';
 
-const MySubscriptions = () => {
+const MySubscriptions: FC<MySubscriptionsProps> = ({ initialSlideIndex }) => {
   const subscribes = useSelector(subscribesSelectors.mySubscriptions);
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [currentSlide, setCurrentSlide] = useState<number>(initialSlideIndex);
   const codes = useSelector((state: RootState) =>
     subscribes[currentSlide] ? codesSelectors.codesOfSub(state, subscribes[currentSlide].id) : [],
   );
-
+  const codesIds = useSelector(codesSelectors.selectedCodesIds);
+  const dispatch = useAppDispatch();
   const { height, width } = useWindowDimensions();
 
   const nextSlide = () => {
@@ -40,10 +39,18 @@ const MySubscriptions = () => {
 
   const [currentTranslate, setCurrentTranslate] = useState<number>(0);
   const [slideWidth, setSlideWidth] = useState<number>(620);
+  const [selectMode, setSelectMode] = useState(false);
 
   useEffect(() => {
     setCurrentTranslate(-1 * currentSlide * (slideWidth + 28));
+    setSelectMode(false);
+    if (_.some(codes, (code) => code.status === 'HOLD')) {
+      setSelectMode(true);
+    }
+    dispatch(clearSelectedCodes);
   }, [currentSlide]);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (width < 768) {
@@ -51,7 +58,15 @@ const MySubscriptions = () => {
     } else {
       setSlideWidth((width * 0.82) / 2 + 14);
     }
+    const subscribeId = Number(router.query.subscribeId);
+    if (subscribeId) {
+      setSelectMode(true);
+    }
   }, []);
+
+  const onUpgradeClick = () => {
+    router.push({ pathname: '/', query: { subscribeId: subscribes[currentSlide].id } });
+  };
 
   const formatPeriodEnd = (seconds: string) => {
     const durationFrom0 = intervalToDuration({ start: 0, end: Number(seconds) * 1000 });
@@ -59,15 +74,24 @@ const MySubscriptions = () => {
     return format(newDate, 'dd.MM.yyyy');
   };
 
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const onConfirmDomainKeep = async () => {
+    setErrorMessage('');
+    try {
+      await dispatch(manageCodes({ codesIds, subscribeId: subscribes[currentSlide].id })).unwrap();
+      setSelectMode(false);
+    } catch (e: any) {
+      setErrorMessage(e.message);
+    }
+  };
+
   return (
     <div>
       <Container>
         <HeadingWrapper>
           <Heading>My Subscriptions</Heading>
-          <MobileButton>Upgrade</MobileButton>
-          <ButtonWrapper>
-            {subscribes.length !== 0 && <PrimaryButton>Upgrade</PrimaryButton>}
-          </ButtonWrapper>
+          {!!subscribes.length && <UpgradeButton onClick={onUpgradeClick}>Upgrade</UpgradeButton>}
         </HeadingWrapper>
       </Container>
       <LicenseSlider>
@@ -102,16 +126,28 @@ const MySubscriptions = () => {
             </NavButtonRight>
           </SliderNavigation>
         )}
+        {selectMode && <MobileSelectText>Select the domains you want to keep</MobileSelectText>}
         <CodesWrapper>
           {codes.map((code) => (
             <CodeAccordion
               status={code.status}
               code={code.code}
               origin={code.origin === null ? '' : code.origin}
+              id={code.id}
               key={code.id}
             />
           ))}
         </CodesWrapper>
+        {selectMode && (
+          <SelectDomainsWrapper>
+            <div>Select the domains you want to keep</div>
+            <PrimaryButton onClick={onConfirmDomainKeep}>Confirm</PrimaryButton>
+          </SelectDomainsWrapper>
+        )}
+        {selectMode && (
+          <MobileConfirmButton onClick={onConfirmDomainKeep}>Confirm</MobileConfirmButton>
+        )}
+        <ErrorMessage>{errorMessage}</ErrorMessage>
       </Container>
     </div>
   );
@@ -119,6 +155,9 @@ const MySubscriptions = () => {
 
 export default MySubscriptions;
 
+type MySubscriptionsProps = {
+  initialSlideIndex: number;
+};
 type SliderWrapperProps = {
   $translate: number;
 };
@@ -152,7 +191,23 @@ const HeadingWrapper = styled.div`
     margin-bottom: 10px;
   }
 `;
-const MobileButton = styled.div`
+const UpgradeButton = styled(PrimaryButton)`
+  @media (max-width: 768px) {
+    font-size: 24px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.primaryColor};
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: none;
+    padding: 0;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+const MobileUpgradeButton = styled.div`
   display: none;
   font-size: 24px;
   font-weight: 700;
@@ -161,11 +216,7 @@ const MobileButton = styled.div`
     display: block;
   }
 `;
-const ButtonWrapper = styled.div`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
+const ButtonWrapper = styled.div``;
 const LicenseSlider = styled.div`
   margin-top: 48px;
   gap: 28px;
@@ -220,4 +271,40 @@ const CodesWrapper = styled.div`
   flex-direction: column;
   gap: 32px;
   margin-top: 32px;
+`;
+const SelectDomainsWrapper = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 72px;
+  @media (max-width: 576px) {
+    display: none;
+  }
+`;
+const MobileConfirmButton = styled(PrimaryButton)`
+  width: 100%;
+  margin-top: 36px;
+  display: none;
+  height: 72px;
+  @media (max-width: 576px) {
+    display: block;
+  }
+`;
+const MobileSelectText = styled.div`
+  margin-top: 32px;
+  margin-bottom: 28px;
+  font-size: 20px;
+  font-weight: 700;
+  display: none;
+  @media (max-width: 576px) {
+    display: block;
+  }
+`;
+const ErrorMessage = styled.div`
+  color: ${({ theme }) => theme.colors.red400};
+  font-size: 18px;
+  @media (max-width: 576px) {
+    margin-top: 20px;
+  }
 `;
