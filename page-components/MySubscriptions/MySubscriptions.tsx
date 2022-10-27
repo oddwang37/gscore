@@ -31,6 +31,7 @@ const MySubscriptions: FC<MySubscriptionsProps> = ({ initialSlideIndex }) => {
       setCurrentSlide((prev) => ++prev);
     }
   };
+
   const prevSlide = () => {
     if (currentSlide !== 0) {
       setCurrentSlide((prev) => --prev);
@@ -41,10 +42,14 @@ const MySubscriptions: FC<MySubscriptionsProps> = ({ initialSlideIndex }) => {
   const [slideWidth, setSlideWidth] = useState<number>(620);
   const [selectMode, setSelectMode] = useState(false);
 
+  const isCurrentSlideContainsHolds = () =>
+    subscribes[currentSlide] &&
+    _.some(subscribes[currentSlide].codes, (code) => code.status === 'HOLD');
+
   useEffect(() => {
     setCurrentTranslate(-1 * currentSlide * (slideWidth + 28));
     setSelectMode(false);
-    if (_.some(codes, (code) => code.status === 'HOLD')) {
+    if (isCurrentSlideContainsHolds()) {
       setSelectMode(true);
     }
     dispatch(clearSelectedCodes);
@@ -62,7 +67,16 @@ const MySubscriptions: FC<MySubscriptionsProps> = ({ initialSlideIndex }) => {
     if (subscribeId) {
       setSelectMode(true);
     }
+    if (isCurrentSlideContainsHolds()) {
+      setSelectMode(true);
+    }
   }, []);
+
+  useEffect(() => {
+    if (isCurrentSlideContainsHolds()) {
+      setSelectMode(true);
+    }
+  }, [subscribes]);
 
   const onUpgradeClick = () => {
     router.push({ pathname: '/', query: { subscribeId: subscribes[currentSlide].id } });
