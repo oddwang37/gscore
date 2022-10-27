@@ -29,6 +29,9 @@ class Http {
   async patch(endpoint: string, requestBody: object, config: AxiosRequestConfig = {}) {
     return await instance.patch(endpoint, requestBody, config);
   }
+  async put(endpoint: string, requestBody: object, config: AxiosRequestConfig = {}) {
+    return await instance.put(endpoint, requestBody, config);
+  }
 }
 
 const http = new Http();

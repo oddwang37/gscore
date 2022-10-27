@@ -4,11 +4,10 @@ import { useSelector } from 'react-redux';
 
 import { useAppDispatch, RootState } from 'state/store';
 import { activateCode } from 'state/ducks/codes/thunks';
-import { Checkbox } from 'components';
 import SecondaryButton from 'components/UI/buttons/SecondaryButton/SecondaryButton';
-import { CodeInput } from './components';
+import { CodeInput, CodeCheckbox } from './components';
 
-const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
+const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin, id }) => {
   const isLoading = useSelector((state: RootState) => state.codes.isLoading);
   const dispatch = useAppDispatch();
   const [isOpened, setIsOpened] = useState<boolean>(false);
@@ -40,7 +39,7 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
             <Heading>Status</Heading>
           </>
         )}
-        <Checkbox />
+        <CodeCheckbox codeId={id} />
         <CodeInput copyable value={code} />
         <CodeInput value={origin} />
         {status === 'INACTIVE' && (
@@ -53,7 +52,7 @@ const CodeAccordion: FC<CodeAccordionProps> = ({ code, status, origin }) => {
       <MobileWrapper>
         <MobileHeader>
           <StatusWrapper>
-            <Checkbox />
+            <CodeCheckbox codeId={id} />
             <Status $status={status}>{status.toLowerCase()}</Status>
           </StatusWrapper>
           {status === 'INACTIVE' && (
@@ -82,6 +81,7 @@ type CodeAccordionProps = {
   code: string;
   status: Status;
   origin: string;
+  id: number;
 };
 type RootProps = {
   $isOpened: boolean;

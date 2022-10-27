@@ -1,27 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { intervalToDuration, add, format } from 'date-fns';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
 
-import { RootState } from 'state/store';
+import { RootState, useAppDispatch } from 'state/store';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
+import { manageCodes } from 'state/ducks/codes/thunks';
 import { subscribesSelectors } from 'state/ducks/subscribes';
 import { codesSelectors } from 'state/ducks/codes';
-
+import { clearSelectedCodes } from 'state/ducks/codes';
 import { LicenseCard, CodeAccordion, Container, NoSubsPlaceholder } from 'components';
 import PrimaryButton from 'components/UI/buttons/PrimaryButton/PrimaryButton';
 import { ArrowLeft, ArrowRight } from 'components/svg';
 
-const MySubscriptions = () => {
+const MySubscriptions: FC<MySubscriptionsProps> = ({ initialSlideIndex }) => {
   const subscribes = useSelector(subscribesSelectors.mySubscriptions);
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [currentSlide, setCurrentSlide] = useState<number>(initialSlideIndex);
   const codes = useSelector((state: RootState) =>
     subscribes[currentSlide] ? codesSelectors.codesOfSub(state, subscribes[currentSlide].id) : [],
   );
-
+  const codesIds = useSelector(codesSelectors.selectedCodesIds);
+  const dispatch = useAppDispatch();
   const { height, width } = useWindowDimensions();
 
   const nextSlide = () => {
@@ -45,6 +47,7 @@ const MySubscriptions = () => {
     if (_.some(codes, (code) => code.status === 'HOLD')) {
       setSelectMode(true);
     }
+    dispatch(clearSelectedCodes);
   }, [currentSlide]);
 
   const router = useRouter();
@@ -56,11 +59,9 @@ const MySubscriptions = () => {
       setSlideWidth((width * 0.82) / 2 + 14);
     }
     const subscribeId = Number(router.query.subscribeId);
-    subscribes.forEach((sub, i) => {
-      if (sub.id === subscribeId) {
-        setCurrentSlide(i);
-      }
-    });
+    if (subscribeId) {
+      setSelectMode(true);
+    }
   }, []);
 
   const onUpgradeClick = () => {
@@ -73,14 +74,24 @@ const MySubscriptions = () => {
     return format(newDate, 'dd.MM.yyyy');
   };
 
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const onConfirmDomainKeep = async () => {
+    setErrorMessage('');
+    try {
+      await dispatch(manageCodes({ codesIds, subscribeId: subscribes[currentSlide].id })).unwrap();
+      setSelectMode(false);
+    } catch (e: any) {
+      setErrorMessage(e.message);
+    }
+  };
+
   return (
     <div>
       <Container>
         <HeadingWrapper>
           <Heading>My Subscriptions</Heading>
-          {subscribes.length !== 0 && (
-            <UpgradeButton onClick={onUpgradeClick}>Upgrade</UpgradeButton>
-          )}
+          {!!subscribes.length && <UpgradeButton onClick={onUpgradeClick}>Upgrade</UpgradeButton>}
         </HeadingWrapper>
       </Container>
       <LicenseSlider>
@@ -122,6 +133,7 @@ const MySubscriptions = () => {
               status={code.status}
               code={code.code}
               origin={code.origin === null ? '' : code.origin}
+              id={code.id}
               key={code.id}
             />
           ))}
@@ -129,10 +141,13 @@ const MySubscriptions = () => {
         {selectMode && (
           <SelectDomainsWrapper>
             <div>Select the domains you want to keep</div>
-            <PrimaryButton>Confirm</PrimaryButton>
+            <PrimaryButton onClick={onConfirmDomainKeep}>Confirm</PrimaryButton>
           </SelectDomainsWrapper>
         )}
-        <MobileConfirmButton>Confirm</MobileConfirmButton>
+        {selectMode && (
+          <MobileConfirmButton onClick={onConfirmDomainKeep}>Confirm</MobileConfirmButton>
+        )}
+        <ErrorMessage>{errorMessage}</ErrorMessage>
       </Container>
     </div>
   );
@@ -140,6 +155,9 @@ const MySubscriptions = () => {
 
 export default MySubscriptions;
 
+type MySubscriptionsProps = {
+  initialSlideIndex: number;
+};
 type SliderWrapperProps = {
   $translate: number;
 };
@@ -281,5 +299,12 @@ const MobileSelectText = styled.div`
   display: none;
   @media (max-width: 576px) {
     display: block;
+  }
+`;
+const ErrorMessage = styled.div`
+  color: ${({ theme }) => theme.colors.red400};
+  font-size: 18px;
+  @media (max-width: 576px) {
+    margin-top: 20px;
   }
 `;
