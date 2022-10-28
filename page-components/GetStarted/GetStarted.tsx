@@ -36,7 +36,7 @@ const GetStarted = () => {
             price={product.prices[0].price}
             sitesQuantity={product.sitesCount}
             key={product.id}
-            isMainColor={i === 1 ? true : false}
+            isMainColor={i === 1}
             id={product.id}
             onButtonClick={onProductButtonClick}
           />
