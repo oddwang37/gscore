@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import _ from 'lodash';
-import { useSelector } from 'react-redux';
 
-import { RootState } from 'state/store';
-import { codesSelectors } from 'state/ducks/codes';
+import { useAppDispatch } from 'state/store';
 import { Subscribes } from 'state/ducks/subscribes/types';
+import { clearSelectedCodes } from 'state/ducks/codes';
 
 export const useSlider = (
   subscribes: Subscribes,
@@ -12,6 +11,7 @@ export const useSlider = (
   slideWidth: number,
   changeSelectMode: (val: boolean) => void,
 ) => {
+  const dispatch = useAppDispatch();
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [currentTranslate, setCurrentTranslate] = useState<number>(0);
 
@@ -37,6 +37,7 @@ export const useSlider = (
     if (isCurrentSlideContainsHolds()) {
       changeSelectMode(true);
     }
+    dispatch(clearSelectedCodes());
   }, [currentSlide]);
 
   useEffect(() => {
