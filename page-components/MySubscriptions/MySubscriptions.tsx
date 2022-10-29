@@ -2,10 +2,10 @@
 import { useState, useEffect, FC } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { intervalToDuration, add, format } from 'date-fns';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
 
+import { slider } from 'constants/slider';
 import { useSlider } from 'hooks/useSlider';
 import { RootState, useAppDispatch } from 'state/store';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
@@ -28,9 +28,9 @@ const MySubscriptions: FC<MySubscriptionsProps> = ({ initialSlideIndex }) => {
 
   useEffect(() => {
     if (width < 768) {
-      setSlideWidth(width * 0.82 + 20);
+      setSlideWidth(width * slider.widthWithoutPadding + 20);
     } else {
-      setSlideWidth((width * 0.82) / 2 + 14);
+      setSlideWidth((width * slider.widthWithoutPadding) / 2 + 14);
     }
   }, []);
 

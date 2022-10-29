@@ -36,9 +36,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           });
         }
         await store.dispatch(getCodes({ headers: { Authorization: `Bearer ${token}` } }));
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
       return { props: { initialSlideIndex } };
     },
 );

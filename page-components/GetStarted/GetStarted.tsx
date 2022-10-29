@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
+import { routes } from 'constants/routes';
 import { RootState, wrapper, useAppDispatch } from 'state/store';
 import { PricingCard, Container } from 'components';
 import { setSelectedId } from 'state/ducks/products/slices';
@@ -19,10 +20,10 @@ const GetStarted = () => {
     const subscribeId = router.query.subscribeId;
     if (subscribeId) {
       dispatch(changeSubscribe({ productId: id, subscribeId: Number(subscribeId) }));
-      router.push({ pathname: '/my-subscriptions', query: { subscribeId: subscribeId } });
+      router.push({ pathname: routes.mySubscriptions, query: { subscribeId: subscribeId } });
     } else {
       dispatch(setSelectedId(id));
-      router.push('/create-account');
+      router.push(routes.createAccount);
     }
   };
 

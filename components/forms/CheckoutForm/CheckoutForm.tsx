@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
 
+import { routes } from 'constants/routes';
 import { buySubscribe } from 'state/ducks/subscribes/thunks';
 import { useAppDispatch } from 'state/store';
 import { productsSelectors } from 'state/ducks/products';
@@ -19,7 +20,7 @@ const CheckoutForm = () => {
   const onPurchase = () => {
     if (productInfo) {
       dispatch(buySubscribe({ priceId: productInfo.id }));
-      router.push('/start-subscription');
+      router.push(routes.startSubscription);
     }
   };
 

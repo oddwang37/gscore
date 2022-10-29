@@ -3,6 +3,7 @@ import Link from 'next/link';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
 
+import { routes } from 'constants/routes';
 import { productsSelectors } from 'state/ducks/products';
 import PrimaryButton from 'components/UI/buttons/PrimaryButton/PrimaryButton';
 import { Delete } from 'components/svg';
@@ -32,7 +33,7 @@ const StartSub = () => {
             </Wrapper>
           </ListItem>
         </ListWrapper>
-        <Link href="/my-subscriptions">
+        <Link href={routes.mySubscriptions}>
           <Button>Go to my subscriptions</Button>
         </Link>
       </Root>
