@@ -49,15 +49,6 @@ const codesSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(manageCodes.fulfilled, (state, action) => {
-      /* const subscribeId = state.codes.find(
-        (code) => code.id === state.selectedCodesIds[0],
-      )?.subscribeId;
-      const codesWithoutHold = state.codes.filter(
-        (code) => code.subscribeId === subscribeId && code.status === 'HOLD',
-      );
-      console.log(codesWithoutHold);
-      state.codes = _.merge(codesWithoutHold, action.payload);
-      state.selectedCodesIds = []; */
       const subscribeId = action.payload[0].subscribeId;
       state.codes = state.codes
         .filter((code) => code.subscribeId !== subscribeId)

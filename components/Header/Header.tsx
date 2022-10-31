@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
+import { routes } from 'constants/routes';
 import { ChevronDown, Logo, Burger } from 'components/svg';
 import { HeaderDropdown, RightMenu } from './components';
 import { authSelectors } from 'state/ducks/auth';
@@ -23,10 +24,11 @@ const Header = () => {
   const closeMenu = () => setIsMenuOpened(false);
 
   const username = useSelector(authSelectors.username);
-  /*
+
   useEffect(() => {
     dispatch(getMe());
-  }, []); */
+  }, []);
+
   return (
     <Root>
       <Container>
@@ -40,7 +42,7 @@ const Header = () => {
         {username && (
           <>
             <FlexWrapper>
-              <Link href="/my-subscriptions">
+              <Link href={routes.mySubscriptions}>
                 <SLink>My subscriptions</SLink>
               </Link>
               <UserWrapper>
@@ -56,7 +58,6 @@ const Header = () => {
                 </IconWrapper>
               </UserWrapper>
               <HeaderDropdown isOpened={isDropdownOpened} closeDropdown={closeDropdown} />
-              {/* <PrimaryButton>Get Gscore</PrimaryButton> */}
             </FlexWrapper>
             <BurgerMenu onClick={openMenu}>
               <Burger />

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
+import { routes } from 'constants/routes';
 import { useAppDispatch } from 'state/store';
 import { logout } from 'state/ducks/auth/slices';
 
@@ -24,7 +25,7 @@ const HeaderDropdown: FC<HeaderDropdownProps> = ({ isOpened, closeDropdown }) =>
 
   return (
     <Root $isOpened={isOpened}>
-      <Link href="/settings">
+      <Link href={routes.settings}>
         <DropdownItem onClick={onSettingsClick}>
           <Settings />
           <ItemText>Settings</ItemText>

@@ -1,8 +1,6 @@
 const patterns = {
   email:
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
-};
-
-Object.freeze(patterns);
+} as const;
 
 export default patterns;

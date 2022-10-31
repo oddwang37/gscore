@@ -2,76 +2,53 @@
 import { useState, useEffect, FC } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { intervalToDuration, add, format } from 'date-fns';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
 
+import { slider } from 'constants/slider';
+import { useSlider } from 'hooks/useSlider';
 import { RootState, useAppDispatch } from 'state/store';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import { manageCodes } from 'state/ducks/codes/thunks';
 import { subscribesSelectors } from 'state/ducks/subscribes';
 import { codesSelectors } from 'state/ducks/codes';
-import { clearSelectedCodes } from 'state/ducks/codes';
-import { LicenseCard, CodeAccordion, Container, NoSubsPlaceholder } from 'components';
+import { Container, NoSubsPlaceholder } from 'components';
 import PrimaryButton from 'components/UI/buttons/PrimaryButton/PrimaryButton';
-import { ArrowLeft, ArrowRight } from 'components/svg';
+import { LicensesSlider } from 'components/LicensesSlider';
+import { Codes } from './components';
 
 const MySubscriptions: FC<MySubscriptionsProps> = ({ initialSlideIndex }) => {
-  const subscribes = useSelector(subscribesSelectors.mySubscriptions);
-  const [currentSlide, setCurrentSlide] = useState<number>(initialSlideIndex);
-  const codes = useSelector((state: RootState) =>
-    subscribes[currentSlide] ? codesSelectors.codesOfSub(state, subscribes[currentSlide].id) : [],
-  );
-  const codesIds = useSelector(codesSelectors.selectedCodesIds);
-  const dispatch = useAppDispatch();
-  const { height, width } = useWindowDimensions();
-
-  const nextSlide = () => {
-    if (currentSlide !== subscribes.length - 1) {
-      setCurrentSlide((prev) => ++prev);
-    }
-  };
-  const prevSlide = () => {
-    if (currentSlide !== 0) {
-      setCurrentSlide((prev) => --prev);
-    }
-  };
-
-  const [currentTranslate, setCurrentTranslate] = useState<number>(0);
   const [slideWidth, setSlideWidth] = useState<number>(620);
+  const subscribes = useSelector(subscribesSelectors.mySubscriptions);
+  const codesIds = useSelector(codesSelectors.selectedCodesIds);
   const [selectMode, setSelectMode] = useState(false);
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    setCurrentTranslate(-1 * currentSlide * (slideWidth + 28));
-    setSelectMode(false);
-    if (_.some(codes, (code) => code.status === 'HOLD')) {
-      setSelectMode(true);
-    }
-    dispatch(clearSelectedCodes);
-  }, [currentSlide]);
-
-  const router = useRouter();
+  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     if (width < 768) {
-      setSlideWidth(width * 0.82 + 20);
+      setSlideWidth(width * slider.widthWithoutPadding + 20);
     } else {
-      setSlideWidth((width * 0.82) / 2 + 14);
-    }
-    const subscribeId = Number(router.query.subscribeId);
-    if (subscribeId) {
-      setSelectMode(true);
+      setSlideWidth((width * slider.widthWithoutPadding) / 2 + 14);
     }
   }, []);
 
-  const onUpgradeClick = () => {
-    router.push({ pathname: '/', query: { subscribeId: subscribes[currentSlide].id } });
+  const changeSelectMode = (val: boolean) => {
+    setSelectMode(val);
   };
 
-  const formatPeriodEnd = (seconds: string) => {
-    const durationFrom0 = intervalToDuration({ start: 0, end: Number(seconds) * 1000 });
-    const newDate = add(new Date(0), durationFrom0);
-    return format(newDate, 'dd.MM.yyyy');
+  const router = useRouter();
+
+  const { prevSlide, nextSlide, currentSlide, currentTranslate } = useSlider(
+    subscribes,
+    initialSlideIndex,
+    slideWidth,
+    changeSelectMode,
+  );
+
+  const onUpgradeClick = () => {
+    router.push({ pathname: '/', query: { subscribeId: subscribes[currentSlide].id } });
   };
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -94,50 +71,21 @@ const MySubscriptions: FC<MySubscriptionsProps> = ({ initialSlideIndex }) => {
           {!!subscribes.length && <UpgradeButton onClick={onUpgradeClick}>Upgrade</UpgradeButton>}
         </HeadingWrapper>
       </Container>
-      <LicenseSlider>
-        <SliderWrapper $translate={currentTranslate}>
-          {subscribes &&
-            subscribes.map((subscribe: any, index) => (
-              <SliderItem $width={slideWidth} key={subscribe.id}>
-                <LicenseCard
-                  name={subscribe.product.name}
-                  currentPeriodEnd={formatPeriodEnd(subscribe.currentPeriodEnd)}
-                  status={subscribe.status}
-                  disabled={currentSlide !== index}
-                  price={subscribe.product.prices[0].price}
-                />
-              </SliderItem>
-            ))}
-        </SliderWrapper>
-      </LicenseSlider>
-      {subscribes.length === 0 && <NoSubsPlaceholder />}
+      {!!subscribes.length ? (
+        <LicensesSlider
+          prevSlide={prevSlide}
+          nextSlide={nextSlide}
+          currentSlide={currentSlide}
+          currentTranslate={currentTranslate}
+          initialSlideIndex={initialSlideIndex}
+          slideWidth={slideWidth}
+        />
+      ) : (
+        <NoSubsPlaceholder />
+      )}
       <Container>
-        {subscribes.length !== 0 && (
-          <SliderNavigation>
-            <NavButtonLeft $inactive={currentSlide === 0} onClick={prevSlide}>
-              <ArrowLeft />
-            </NavButtonLeft>
-            <SlidesQuantity>
-              <CurrentSlide>{currentSlide + 1}/</CurrentSlide>
-              {subscribes && subscribes.length}
-            </SlidesQuantity>
-            <NavButtonRight $inactive={currentSlide >= subscribes.length - 1} onClick={nextSlide}>
-              <ArrowRight />
-            </NavButtonRight>
-          </SliderNavigation>
-        )}
         {selectMode && <MobileSelectText>Select the domains you want to keep</MobileSelectText>}
-        <CodesWrapper>
-          {codes.map((code) => (
-            <CodeAccordion
-              status={code.status}
-              code={code.code}
-              origin={code.origin === null ? '' : code.origin}
-              id={code.id}
-              key={code.id}
-            />
-          ))}
-        </CodesWrapper>
+        <Codes subscribeId={subscribes[currentSlide] ? subscribes[currentSlide].id : 0} />
         {selectMode && (
           <SelectDomainsWrapper>
             <div>Select the domains you want to keep</div>

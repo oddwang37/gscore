@@ -4,6 +4,7 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
+import { routes } from 'constants/routes';
 import patterns from 'constants/validation';
 import cookies, { CookiesKeys } from 'services/cookies';
 import { useAppDispatch } from 'state/store';
@@ -42,7 +43,7 @@ const LogInForm: FC<LogInFormProps> = ({ nextStep }) => {
       if (productId) {
         nextStep();
       } else {
-        router.push('/my-subscriptions');
+        router.push(routes.mySubscriptions);
       }
     }
   });

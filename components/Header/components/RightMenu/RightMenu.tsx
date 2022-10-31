@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+import { routes } from 'constants/routes';
 import { useAppDispatch } from 'state/store';
 import { logout } from 'state/ducks/auth/slices';
 import { authSelectors } from 'state/ducks/auth';
@@ -44,7 +45,7 @@ const RightMenu: FC<RightMenuProps> = ({ isOpened, closeMenu }) => {
         </LogoWrapper>
       </Header>
       <MenuItems>
-        <Link href="/my-subscriptions">
+        <Link href={routes.mySubscriptions}>
           <MenuItem>My subscriptions</MenuItem>
         </Link>
         <MenuItem>
@@ -59,7 +60,7 @@ const RightMenu: FC<RightMenuProps> = ({ isOpened, closeMenu }) => {
             )}
           </FlexWrapper>
           <Dropdown $isOpened={isDropdownOpened}>
-            <Link href="/settings">
+            <Link href={routes.settings}>
               <DropdownItem onClick={onSettingsClick}>
                 <Settings />
                 <ItemText>Settings</ItemText>

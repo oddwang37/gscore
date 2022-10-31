@@ -19,9 +19,6 @@ const subscribesSlice = createSlice({
     builder.addCase(getSubscribes.fulfilled, (state, action) => {
       state.subscribes = action.payload;
     });
-    builder.addCase(changeSubscribe.fulfilled, (state, action) => {
-      console.log(action.payload);
-    });
   },
 });
 

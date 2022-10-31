@@ -35,7 +35,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
             }
           });
         }
-        console.log(initialSlideIndex, 'initial slide');
         await store.dispatch(getCodes({ headers: { Authorization: `Bearer ${token}` } }));
       } catch (e) {}
       return { props: { initialSlideIndex } };
