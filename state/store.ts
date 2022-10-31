@@ -18,9 +18,11 @@ import { logout } from './ducks/auth';
 
 const reducer: typeof rootReducer = (state, action: AnyAction) => {
   if (action.type === HYDRATE) {
+    console.log(action.payload);
+    const { auth, ...payloadRest } = action.payload;
     const nextState = {
       ...state,
-      ...action.payload,
+      ...payloadRest,
     };
     return nextState;
   } else {

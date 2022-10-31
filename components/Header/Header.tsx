@@ -26,9 +26,7 @@ const Header = () => {
   const username = useSelector(authSelectors.username);
 
   useEffect(() => {
-    if (!username) {
-      dispatch(getMe());
-    }
+    dispatch(getMe());
   }, []);
 
   return (
