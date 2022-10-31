@@ -1,9 +1,15 @@
 import { combineReducers } from 'redux';
 
-import someReducer from './some/slices';
+import authReducer from './auth/slices';
+import productsReducer from './products/slices';
+import subscribesReducer from './subscribes/slices';
+import codesReducer from './codes/slices';
 
 const rootReducer = combineReducers({
-  some: someReducer,
+  auth: authReducer,
+  products: productsReducer,
+  subscribes: subscribesReducer,
+  codes: codesReducer,
 });
 
 export default rootReducer;

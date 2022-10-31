@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { Input } from 'components';
 import { Copy } from 'components/svg';
 
-const CodeInput: FC<CodeInputProps> = ({ copyable }) => {
+const CodeInput: FC<CodeInputProps> = ({ copyable, value }) => {
   return (
     <Root>
-      <Field readOnly />
+      <Field $copyable={copyable} readOnly defaultValue={value} />
       {copyable && (
         <IconWrapper>
           <Copy />
@@ -21,10 +20,11 @@ export default CodeInput;
 
 type CodeInputProps = {
   copyable?: boolean;
+  value: string;
 };
 
 type FieldProps = {
-  copyable?: boolean;
+  $copyable?: boolean;
 };
 
 const Root = styled.div`
@@ -36,16 +36,27 @@ const IconWrapper = styled.div`
   top: 53%;
   transform: translateY(-50%);
   cursor: pointer;
+  & path {
+    fill: #393939;
+  }
   &:hover path {
     stroke: #c7c7c7;
   }
 `;
-const Field = styled(Input)<FieldProps>`
+const Field = styled.input<FieldProps>`
+  height: 66px;
+  width: 100%;
+  display: block;
   background: #393939;
   box-shadow: 0px 2px 12px rgba(20, 20, 43, 0.06);
   border-radius: 6px;
   border: none;
   color: #969696;
-  padding-right: ${(p) => (p.copyable ? '30%' : '0')};
+  padding-right: ${({ $copyable }) => ($copyable ? '30%' : '0')};
   margin-bottom: 0;
+  padding: 25px 23px;
+  font-family: inherit;
+  &:focus {
+    outline: 1px solid #000;
+  }
 `;

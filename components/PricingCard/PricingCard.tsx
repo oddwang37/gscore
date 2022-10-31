@@ -1,42 +1,62 @@
 import React, { FC } from 'react';
-import { Logo } from 'components/svg';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
-import { Root as SecondaryButton } from 'components/UI/buttons/SecondaryButton/SecondaryButton';
-import { ChevronDown, Check } from 'components/svg';
+import { useAppDispatch } from 'state/store';
+import { Check } from 'components/svg';
 
-const PricingCard:FC<PricingCardProps> = ({price, sitesQuantity, isMainColor}) => {
+const PricingCard: FC<PricingCardProps> = ({
+  name,
+  price,
+  sitesQuantity,
+  isMainColor,
+  id,
+  onButtonClick,
+}) => {
   return (
-    <Root isMainColor={isMainColor}>
+    <Root $isMainColor={isMainColor}>
       <Price>${price}</Price>
-      <SitesQuantity>${sitesQuantity === 1 ? 'Single' : sitesQuantity} Site license</SitesQuantity>
-      <Description isMainColor={isMainColor}>Get the advanced WordPress plugin that optimizes content with GSC keywords at one low annual price</Description>
+      <SitesQuantity>{name}</SitesQuantity>
+      <Description $isMainColor={isMainColor}>
+        Get the advanced WordPress plugin that optimizes content with GSC keywords at one low annual
+        price
+      </Description>
       <Divider />
       <List>
         <ListItem>
-          <ListItemCheck isMainColor={isMainColor}><Check /></ListItemCheck>
+          <ListItemCheck $isMainColor={isMainColor}>
+            <Check />
+          </ListItemCheck>
           <ListItemText>All features for 3 sites</ListItemText>
         </ListItem>
       </List>
       <List>
         <ListItem>
-          <ListItemCheck isMainColor={isMainColor}><Check /></ListItemCheck>
+          <ListItemCheck $isMainColor={isMainColor}>
+            <Check />
+          </ListItemCheck>
           <ListItemText>Special introductory pricing</ListItemText>
         </ListItem>
       </List>
       <List>
         <ListItem>
-          <ListItemCheck isMainColor={isMainColor}><Check /></ListItemCheck>
+          <ListItemCheck $isMainColor={isMainColor}>
+            <Check />
+          </ListItemCheck>
           <ListItemText>Unlimited Pages and Keywords</ListItemText>
         </ListItem>
       </List>
       <List>
         <ListItem>
-          <ListItemCheck isMainColor={isMainColor}><Check /></ListItemCheck>
+          <ListItemCheck $isMainColor={isMainColor}>
+            <Check />
+          </ListItemCheck>
           <ListItemText>Billed annually</ListItemText>
         </ListItem>
       </List>
-      <Button isMainColor={isMainColor}>Get Gscore</Button>
+      <Button onClick={() => onButtonClick(id)} $isMainColor={isMainColor}>
+        Get Gscore
+      </Button>
     </Root>
   );
 };
@@ -44,40 +64,43 @@ const PricingCard:FC<PricingCardProps> = ({price, sitesQuantity, isMainColor}) =
 export default PricingCard;
 
 type PricingCardProps = {
-  price: number;
+  name: string;
+  price: string;
   sitesQuantity: number;
   isMainColor?: boolean;
-}
+  id: number;
+  onButtonClick: (id: number) => void;
+};
 
 type IsMainColorProp = {
-  isMainColor?: boolean;
-}
+  $isMainColor?: boolean;
+};
 
 const Root = styled.div<IsMainColorProp>`
   padding: 42px 48px;
   text-align: center;
-  background-color: ${p => p.isMainColor ? '#FC5842' : '#272727' };
+  background-color: ${({ $isMainColor }) => ($isMainColor ? '#FC5842' : '#272727')};
   box-shadow: 0px 8px 28px rgba(0, 0, 0, 0.06);
   border-radius: 12px;
+  @media (min-width: 768px) {
+    margin-bottom: ${({ $isMainColor }) => ($isMainColor ? '5%' : '0')};
+  }
 `;
 
 const Price = styled.div`
-  font-size: 54px;
-  font-weight: 700;
-`
+  ${({ theme: { typography } }) => typography.title54};
+`;
 
 const SitesQuantity = styled.div`
   margin-top: 10px;
   font-size: 24px;
   font-weight: 700;
-`
+`;
 const Description = styled.div<IsMainColorProp>`
-  line-height: 30px;
-  font-size: 18px;
-  font-weight: 500;
+  ${({ theme: { typography } }) => typography.textMedium18Center}
   margin-top: 8px;
-  color: ${p => p.isMainColor ? '#fff' : '#c7c7c7' };
-`
+  color: ${({ $isMainColor }) => ($isMainColor ? '#fff' : '#c7c7c7')};
+`;
 
 const Divider = styled.div`
   width: 100%;
@@ -85,13 +108,13 @@ const Divider = styled.div`
   background-color: #fff;
   margin-top: 40px;
   margin-bottom: 40px;
-`
+`;
 
 const List = styled.ul`
   list-style-type: none;
   text-align: left;
   margin-bottom: 32px;
-`
+`;
 
 const ListItem = styled.li`
   display: flex;
@@ -99,11 +122,10 @@ const ListItem = styled.li`
   align-items: center;
   text-align: left;
   margin-bottom: 20px;
-`
+`;
 const ListItemText = styled.div`
-  font-size: 18px;
-  font-weight: 500;
-`
+  ${({ theme: { typography } }) => typography.textMedium18}
+`;
 const ListItemCheck = styled.div<IsMainColorProp>`
   width: 26px;
   height: 26px;
@@ -115,10 +137,32 @@ const ListItemCheck = styled.div<IsMainColorProp>`
     height: 26px;
   }
   & path {
-    stroke: ${p => p.isMainColor ? '#FC5842' : '#272727' };
+    stroke: ${({ $isMainColor }) => ($isMainColor ? '#FC5842' : '#272727')};
   }
-`
-const Button = styled(SecondaryButton)<IsMainColorProp>`
-  color: ${p => p.isMainColor ? '#FC5842' : '#181818' };
+`;
+const Button = styled.button<IsMainColorProp>`
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: THICCCBOI;
+  opacity: ${(p) => (p.disabled ? 0.6 : 1)};
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 10px 28px rgba(252, 88, 66, 0.2);
+  border-radius: 4px;
+  padding: 20px 60px;
+  background-color: #fff;
+  width: 100%;
+  &:hover {
+    background-color: #fbfbfb;
+  }
+  &:focus {
+    outline: 4px solid rgba(252, 88, 66, 0.3);
+  }
+  color: ${({ $isMainColor }) => ($isMainColor ? '#FC5842' : '#181818')};
   box-shadow: none;
-`
+`;
