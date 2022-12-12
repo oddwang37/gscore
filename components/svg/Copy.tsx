@@ -1,3 +1,6 @@
+import * as React from "react";
+import { SVGProps } from "react";
+
 const Copy = (props: SVGProps<SVGSVGElement>) => (
   <svg
     width={32}
