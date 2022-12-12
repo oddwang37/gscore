@@ -4,9 +4,9 @@
 Tech stack:
 
 * Next JS
-* axios
 * redux-toolkit
 * styled-components
+* axios
 * lodash
 * cookies-next
 * date-fns 
